@@ -3,9 +3,33 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B02D41CB-7788-458E-9475-CCC1BC446FA3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Product.API", "Services\Product.API\Product.API.csproj", "{7F741618-EFEF-4642-A952-9973583BE9CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory.API", "Services\Inventory.API\Inventory.API.csproj", "{781882EB-4C76-4EA6-A30B-7ADFFE2DA851}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F741618-EFEF-4642-A952-9973583BE9CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F741618-EFEF-4642-A952-9973583BE9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F741618-EFEF-4642-A952-9973583BE9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F741618-EFEF-4642-A952-9973583BE9CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{781882EB-4C76-4EA6-A30B-7ADFFE2DA851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{781882EB-4C76-4EA6-A30B-7ADFFE2DA851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{781882EB-4C76-4EA6-A30B-7ADFFE2DA851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{781882EB-4C76-4EA6-A30B-7ADFFE2DA851}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7F741618-EFEF-4642-A952-9973583BE9CF} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
+		{781882EB-4C76-4EA6-A30B-7ADFFE2DA851} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB4F8DAE-5D27-4E6D-91A5-53263B567DA3}
