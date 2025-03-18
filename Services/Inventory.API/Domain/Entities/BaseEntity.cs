@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Inventory.API.DataAccess.Interfaces;
 
 namespace Inventory.API.Domain.Entities
 {
-    public class BaseEntity
+    public class BaseEntity: ISoftDeletable
     {
         public long Id { get; set; }
         public bool IsDeleted { get; set; }
