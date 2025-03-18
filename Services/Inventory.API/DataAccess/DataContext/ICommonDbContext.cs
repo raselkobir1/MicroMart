@@ -5,6 +5,7 @@ namespace Inventory.API.DataAccess.DataContext
 {
     public interface ICommonDbContext
     {
-        DbSet<Product> Products { get; set; } 
+        DbSet<InventoryInfo> Inventory { get; set; } 
+        DbSet<InventoryHistory> History { get; set; }  
     }
 }

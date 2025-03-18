@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inventory.API.Domain.Entities.SharedEntities
+namespace Inventory.API.Domain.Entities
 {
     public class BaseEntity
     {

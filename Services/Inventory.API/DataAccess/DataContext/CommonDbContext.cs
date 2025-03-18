@@ -14,7 +14,8 @@ namespace Inventory.API.DataAccess.DataContext
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<InventoryHistory> History { get; set; }
+        public virtual DbSet<InventoryInfo> Inventory { get; set; } 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

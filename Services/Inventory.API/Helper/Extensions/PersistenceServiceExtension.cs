@@ -10,7 +10,7 @@ namespace Inventory.API.Helper.Extensions
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"), options =>
                 {
-                    options.MigrationsHistoryTable("__EFMigrationsHistory", "product");
+                    options.MigrationsHistoryTable("__EFMigrationsHistory", "inventory");
                 })
                     .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
             );
