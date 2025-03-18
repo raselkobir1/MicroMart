@@ -1,3 +1,4 @@
+using Inventory.API;
 using Inventory.API.Helper.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ builder.Services.AddPersistenceService(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddInfrastructure();
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();

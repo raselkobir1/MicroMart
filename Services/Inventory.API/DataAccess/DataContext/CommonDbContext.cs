@@ -16,7 +16,7 @@ namespace Inventory.API.DataAccess.DataContext
         }
 
         public virtual DbSet<InventoryHistory> InventoryHistory { get; set; }
-        public virtual DbSet<InventoryInfo> InventoryInfo { get; set; } 
+        public virtual DbSet<InventoryInfo> InventoryInfo { get; set; }  
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
