@@ -1,4 +1,6 @@
 ﻿using Inventory.API.DataAccess.UnitOfWorks;
+using Inventory.API.Manager.Implementation;
+using Inventory.API.Manager.Interface;
 
 namespace Inventory.API
 {
@@ -6,9 +8,8 @@ namespace Inventory.API
     {
         public static void AddInfrastructure(this IServiceCollection services)
         {
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IInventoryInfoManager, InventoryInfoManager>();
         }
     }
 }
