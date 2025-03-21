@@ -44,7 +44,7 @@ namespace Inventory.API.Manager.Implementation
                      ActionType = ActionType.IN,
                      LastQuentity = 0,
                      NewQuentity = dto.Quantity,
-                     QuentityChanged = dto.Quantity,
+                     QuentityChanged = 0,
                      SKU = dto.SKU,
                 }
             };
