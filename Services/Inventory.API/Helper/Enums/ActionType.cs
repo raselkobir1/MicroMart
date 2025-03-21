@@ -2,8 +2,7 @@
 {
     public enum ActionType
     {
-        Create = 1,
-        Update = 2,
-        Delete = 3
+        IN = 1,
+        OUT = 2,
     }
 }

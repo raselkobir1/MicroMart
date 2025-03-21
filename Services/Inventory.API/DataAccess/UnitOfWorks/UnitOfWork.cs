@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
 using Inventory.API.DataAccess.DataContext;
+using Inventory.API.DataAccess.Implementations;
+using Inventory.API.DataAccess.Interfaces;
 using Inventory.API.Domain.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -11,6 +13,8 @@ namespace Inventory.API.DataAccess.UnitOfWorks
         public readonly ApplicationDbContext _dbContext;
         public readonly ReadDbContext _readDbContext;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
+
         public int Save()
         {
             return _dbContext.SaveChanges();
@@ -38,7 +42,7 @@ namespace Inventory.API.DataAccess.UnitOfWorks
 
         public long GetLoggedInUserId()
         {
-            var userId = _httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = "1"; //_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrWhiteSpace(userId))
                 throw new UnauthorizedAccessException();
             return Convert.ToInt64(userId);
@@ -93,9 +97,12 @@ namespace Inventory.API.DataAccess.UnitOfWorks
             _readDbContext = readDbContext;
             _httpContextAccessor = httpContextAccessor;
 
-            //Roles = new RoleRepository(dbContext, readDbContext);
+            InventoryInfos = new InventoryInfoRepository(dbContext, readDbContext);
+            InventoryHistory = new InventoryHistoryRepository(dbContext, readDbContext);
         }
 
-        //public IRoleRepository Roles { get; }
+        public IInventoryInfoRepository InventoryInfos { get; private set; }
+
+        public IInventoryHistoryRepository InventoryHistory { get; private set; }
     }
 }

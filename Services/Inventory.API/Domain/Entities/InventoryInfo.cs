@@ -12,7 +12,7 @@ namespace Inventory.API.Domain.Entities
         public int Quantity { get; set; }
 
         #region Navigation Properties
-        public List<InventoryHistory> InventoryHistory { get; set; }
+        public List<InventoryHistory> InventoryHistory { get; set; } = new();
         #endregion
     }
     public class InventoryConfiguration : BaseEntityTypeConfiguration<InventoryInfo>

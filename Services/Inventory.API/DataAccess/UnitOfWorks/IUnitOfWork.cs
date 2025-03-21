@@ -1,4 +1,6 @@
 ﻿
+using Inventory.API.DataAccess.Interfaces;
+
 namespace Inventory.API.DataAccess.UnitOfWorks
 {
 
@@ -13,7 +15,8 @@ namespace Inventory.API.DataAccess.UnitOfWorks
         long GetLoggedInUserRoleId();
         string GetLoggedInUserName();
         (bool, string) HasDependency(string schemaName, string table, string id);
-        //IRoleRepository Roles { get; }
+        IInventoryInfoRepository InventoryInfos { get; }
+        IInventoryHistoryRepository InventoryHistory { get; }  
         
     }
 }
