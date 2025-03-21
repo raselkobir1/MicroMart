@@ -41,11 +41,11 @@ namespace Inventory.API.Manager.Implementation
             {
                 new InventoryHistory
                 {
+                     SKU = dto.SKU,
                      ActionType = ActionType.IN,
                      LastQuentity = 0,
                      NewQuentity = dto.Quantity,
                      QuentityChanged = 0,
-                     SKU = dto.SKU,
                 }
             };
             inventory.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());

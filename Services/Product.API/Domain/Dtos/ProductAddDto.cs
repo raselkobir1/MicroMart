@@ -1,21 +1,22 @@
 ﻿using FluentValidation;
+using Product.API.Helper.Enums;
 
-namespace Inventory.API.Domain.Dtos
+namespace Product.API.Domain.Dtos
 {
-    public class InventoryInfoAddDto
+    public class ProductAddDto
     {
-        public long ProductId { get; set; }
         public string Name { get; set; }
         public string SKU { get; set; }
+        public ProductStatus Status { get; set; }
         public string Description { get; set; }
-        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public long? InventoryId { get; set; }
     }
 
-    public class InventoryInfoAddDtoValidator : AbstractValidator<InventoryInfoAddDto>
+    public class ProductAddDtoValidator : AbstractValidator<ProductAddDto>
     {
-        public InventoryInfoAddDtoValidator()
+        public ProductAddDtoValidator()
         {
-            RuleFor(obj => obj.ProductId).NotEmpty().GreaterThan(0);
             RuleFor(obj => obj.Name).NotEmpty().MaximumLength(200);
             RuleFor(obj => obj.SKU).NotEmpty().MaximumLength(50);
             RuleFor(obj => obj.Description).MaximumLength(500);
