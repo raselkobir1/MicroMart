@@ -13,14 +13,14 @@ namespace Product.API.Domain.Dtos
         public decimal Price { get; set; }
         public long? InventoryId { get; set; }
     }
-    public class InventoryInfoUpdateDtoValidator : AbstractValidator<ProductUpdateDto>
+    public class ProductUpdateDtoValidator : AbstractValidator<ProductUpdateDto>
     {
-        public InventoryInfoUpdateDtoValidator()
+        public ProductUpdateDtoValidator()
         {
             RuleFor(obj => obj.Id).NotEmpty().GreaterThan(0);
             RuleFor(obj => obj.Name).NotEmpty().MaximumLength(200);
             RuleFor(obj => obj.SKU).NotEmpty().MaximumLength(50);
-            RuleFor(obj => obj.Description).NotEmpty().MaximumLength(500);
+            RuleFor(obj => obj.Description).MaximumLength(500);
         }
     }
 }

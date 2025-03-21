@@ -90,50 +90,29 @@ namespace Product.API.Manager.Implementation
             return Utilities.SuccessResponseForGet(result);
         }
 
-        //public async Task<ResponseModel> ProductUpdate(ProductUpdateDto dto)
-        //{
-        //    #region Validation
-        //    var validationResult = new ProductUpdateDtoValidator().Validate(dto);
-        //    if (!validationResult.IsValid)
-        //        return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
-        //    #endregion
+        public async Task<ResponseModel> ProductUpdate(ProductUpdateDto dto)
+        {
+            #region Validation
+            var validationResult = new ProductUpdateDtoValidator().Validate(dto);
+            if (!validationResult.IsValid)
+                return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
+            #endregion
 
-        //    var product = await _unitOfWork.Products.GetById(dto.Id);
-        //    if (product == null)
-        //        return Utilities.NotFoundResponse("Product not found");
+            var product = await _unitOfWork.Products.GetById(dto.Id);
+            if (product == null)
+                return Utilities.NotFoundResponse("Product not found");
 
-        //    var lastHistory = await _unitOfWork.Products.GetLastInventoryHistoryByInventoryId(product.Id);
-        //    if (lastHistory == null)
-        //        return Utilities.NotFoundResponse("Product history not found");
+            if (await _unitOfWork.Products.Any(x => x.SKU.Trim().ToLower() == dto.SKU.Trim().ToLower()))
+                return Utilities.NotFoundResponse("Product SKU already exists.");
 
-        //    int newQuentity = product.Quantity;
-        //    if (dto.ActionType == ProductStatus.IN)
-        //        newQuentity += dto.Quantity;
-        //    else
-        //        newQuentity -= dto.Quantity;
+            product = dto.Adapt(product);
+            product.SetCommonPropertiesForUpdate(_unitOfWork.GetLoggedInUserId());
+            _unitOfWork.Products.Update(product);
 
-        //    product = dto.Adapt(product);
-        //    product.Quantity = newQuentity;
+            await _unitOfWork.SaveAsync();
 
-        //    var invHistory = new InventoryHistory
-        //                     {
-        //                        ProductId = product.Id,
-        //                        ActionType = dto.ActionType,
-        //                        QuentityChanged = dto.Quantity,
-        //                        LastQuentity = lastHistory.NewQuentity,
-        //                        NewQuentity = newQuentity,
-        //                        SKU = product.SKU,
-        //                     };
-
-        //    product.SetCommonPropertiesForUpdate(_unitOfWork.GetLoggedInUserId());
-        //    invHistory.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
-        //    _unitOfWork.Products.Update(product);
-        //    _unitOfWork.InventoryHistory.Add(invHistory); 
-
-        //    await _unitOfWork.SaveAsync();
-
-        //    var finalResponse = product.Adapt<ProductAddDto>();
-        //    return Utilities.SuccessResponseForAdd(finalResponse);
-        //}
+            var finalResponse = product.Adapt<ProductAddDto>();
+            return Utilities.SuccessResponseForAdd(finalResponse);
+        }
     }
 }
