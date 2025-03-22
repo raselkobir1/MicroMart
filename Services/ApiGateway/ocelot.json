@@ -125,7 +125,16 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ]
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "PeriodTimespan": 10,
+        "Limit": 3
+      }
     }
   ],
   "SwaggerEndPoints": [
