@@ -4,6 +4,8 @@
   },
   "Routes": [
     {
+      "UpstreamPathTemplate": "/product/add",
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/product/add",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -11,11 +13,11 @@
           "Host": "localhost",
           "Port": 4001
         }
-      ],
-      "UpstreamPathTemplate": "/products/add",
-      "UpstreamHttpMethod": [ "POST" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/product/get/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/product/get/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -23,23 +25,27 @@
           "Host": "localhost",
           "Port": 4001
         }
-      ],
-      "UpstreamPathTemplate": "/products/get/{id}",
-      "UpstreamHttpMethod": [ "GET" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/product/getall",
+      "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/product/getall",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 4001
-        }
-      ],
-      "UpstreamPathTemplate": "/products/getall",
-      "UpstreamHttpMethod": [ "GET" ]
+      "DownstreamHostAndPorts": [{ "Host": "localhost","Port": 4001 }],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "PeriodTimespan": 10,
+        "Limit": 3
+      }
     },
     {
+      "UpstreamPathTemplate": "/product/delete/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
       "DownstreamPathTemplate": "/api/product/delete/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -47,11 +53,11 @@
           "Host": "localhost",
           "Port": 4001
         }
-      ],
-      "UpstreamPathTemplate": "/products/delete/{id}",
-      "UpstreamHttpMethod": [ "DELETE" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/product/update",
+      "UpstreamHttpMethod": [ "PUT" ],
       "DownstreamPathTemplate": "/api/product/update",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -59,16 +65,11 @@
           "Host": "localhost",
           "Port": 4001
         }
-      ],
-      "UpstreamPathTemplate": "/products/update",
-      "UpstreamHttpMethod": [ "PUT" ]
+      ]
     },
-
-
-
-
-
     {
+      "UpstreamPathTemplate": "/inventory/add",
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/inventory/add",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -76,11 +77,11 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ],
-      "UpstreamPathTemplate": "/inventory/add",
-      "UpstreamHttpMethod": [ "POST" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/inventory/update",
+      "UpstreamHttpMethod": [ "PUT" ],
       "DownstreamPathTemplate": "/api/inventory/update",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -88,11 +89,11 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ],
-      "UpstreamPathTemplate": "/inventory/update",
-      "UpstreamHttpMethod": [ "PUT" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/inventory/delete/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
       "DownstreamPathTemplate": "/api/inventory/delete/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -100,11 +101,11 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ],
-      "UpstreamPathTemplate": "/inventory/delete/{id}",
-      "UpstreamHttpMethod": [ "DELETE" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/inventory/get/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/inventory/get/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -112,11 +113,11 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ],
-      "UpstreamPathTemplate": "/inventory/get/{id}",
-      "UpstreamHttpMethod": [ "GET" ]
+      ]
     },
     {
+      "UpstreamPathTemplate": "/inventory/getall",
+      "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/inventory/getall",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -124,9 +125,7 @@
           "Host": "localhost",
           "Port": 4002
         }
-      ],
-      "UpstreamPathTemplate": "/inventory/getall",
-      "UpstreamHttpMethod": [ "GET" ]
+      ]
     }
   ],
   "SwaggerEndPoints": [
