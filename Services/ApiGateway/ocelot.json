@@ -1,0 +1,67 @@
+﻿{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:8001"
+  },
+  "Routes": [
+      {
+        "DownstreamPathTemplate": "/api/product/add",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 4001
+          }
+        ],
+        "UpstreamPathTemplate": "/products/add",
+        "UpstreamHttpMethod": [ "POST" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/product/get/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 4001
+          }
+        ],
+        "UpstreamPathTemplate": "/products/get/{id}",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/product/getall",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 4001
+          }
+        ],
+        "UpstreamPathTemplate": "/products/getall",
+        "UpstreamHttpMethod": [ "GET" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/product/delete/{id}",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 4001
+          }
+        ],
+        "UpstreamPathTemplate": "/products/delete/{id}",
+        "UpstreamHttpMethod": [ "DELETE" ]
+      },
+      {
+        "DownstreamPathTemplate": "/api/product/update",
+        "DownstreamScheme": "http",
+        "DownstreamHostAndPorts": [
+          {
+            "Host": "localhost",
+            "Port": 4001
+          }
+        ],
+        "UpstreamPathTemplate": "/products/update",
+        "UpstreamHttpMethod": [ "PUT" ]
+      }
+    ]
+}

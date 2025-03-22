@@ -1,15 +1,10 @@
-﻿using FluentValidation;
-using Product.API.DataAccess.UnitOfWorks;
+﻿using Product.API.DataAccess.UnitOfWorks;
 using Product.API.DataAcess.DataContext;
 using Product.API.Domain.Dto.Common;
 using Product.API.Domain.Dtos;
-using Product.API.Domain.Entities;
 using Product.API.Helper;
-using Product.API.Helper.Enums;
-using Product.API.Helper.Resources;
 using Product.API.Manager.Interface;
 using Mapster;
-using System.Data;
 using Product.API.Helper.Client;
 
 namespace Product.API.Manager.Implementation
