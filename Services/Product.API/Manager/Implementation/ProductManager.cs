@@ -97,7 +97,7 @@ namespace Product.API.Manager.Implementation
             if (product == null)
                 return Utilities.NotFoundResponse("Product not found");
 
-            if (await _unitOfWork.Products.Any(x => x.SKU.Trim().ToLower() == dto.SKU.Trim().ToLower()))
+            if (await _unitOfWork.Products.Any(x => x.SKU.Trim().ToLower() == dto.SKU.Trim().ToLower() && x.Id != dto.Id))
                 return Utilities.NotFoundResponse("Product SKU already exists.");
 
             product = dto.Adapt(product);
