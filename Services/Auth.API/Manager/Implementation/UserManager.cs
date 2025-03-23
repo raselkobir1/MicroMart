@@ -5,18 +5,19 @@ using Auth.API.Domain.Dtos;
 using Auth.API.Helper;
 using Auth.API.Manager.Interface;
 using Mapster;
-//using Auth.API.Helper.Client;
+using Auth.API.Helper.Client;
+using BCrypt.Net;
 
 namespace Auth.API.Manager.Implementation
 {
     public class UserManager : IUserManager
     {
         private readonly IUnitOfWork _unitOfWork;
-        //private readonly InventoryServiceClient _inventoryClient;
-        public UserManager(IUnitOfWork unitOfWork)
+        private readonly UserProfileServiceClient _userProfileClient;
+        public UserManager(IUnitOfWork unitOfWork, UserProfileServiceClient userProfileClient)
         {
             _unitOfWork = unitOfWork;
-            //_inventoryClient = inventoryClient;
+            _userProfileClient = userProfileClient; 
         }
         public Task<ResponseModel> GetDropdownForInventor()
         {
@@ -39,11 +40,26 @@ namespace Auth.API.Manager.Implementation
             if (await _unitOfWork.Users.Any(x => x.UserName.Trim() == dto.UserName.Trim()))
                 return Utilities.ValidationErrorResponse("Auth user name already exists");
 
+            var passHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password, HashType.SHA512, workFactor: 13);
             var User = dto.Adapt<Domain.Entities.User>();
+            User.Password = passHash;  
+            User.Status = Helper.Enums.AccountStatus.PENDING;
+            User.Role = Helper.Enums.Roles.Admin;
+            User.Verified = false;
             User.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
 
             _unitOfWork.Users.Add(User);
             await _unitOfWork.SaveAsync();
+
+            // create user profile
+            var result = await _userProfileClient.CreateUserProfileAsync(User);
+            if (!result)
+            {
+                return Utilities.ValidationErrorResponse("Failed to create user profile");
+            }
+            // Generate verification code and save in table: verificationCode
+
+            // Send email to user for verification
 
             var finalResponse = User.Adapt<UserAddDto>();
             return Utilities.SuccessResponseForAdd(finalResponse);

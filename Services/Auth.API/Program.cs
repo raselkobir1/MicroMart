@@ -6,7 +6,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Auth.API.Helper.ServiceFilter;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
-//using Auth.API.Helper.Client;
+using Auth.API.Helper.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +19,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddPersistenceService(builder.Configuration);
 
 
-//builder.Services.AddHttpClient<InventoryServiceClient>(client =>
-//{
-//    client.BaseAddress = new Uri("http://localhost:4002/"); // Replace with actual Inventory Service URL
-//});
+builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:4004/");
+});
 
 
 builder.Services.AddControllers();
