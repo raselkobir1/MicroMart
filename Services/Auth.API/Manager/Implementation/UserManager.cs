@@ -7,6 +7,8 @@ using Auth.API.Manager.Interface;
 using Mapster;
 using Auth.API.Helper.Client;
 using BCrypt.Net;
+using Auth.API.Domain.Entities;
+using Auth.API.Helper.Enums;
 
 namespace Auth.API.Manager.Implementation
 {
@@ -41,27 +43,36 @@ namespace Auth.API.Manager.Implementation
                 return Utilities.ValidationErrorResponse("Auth user name already exists");
 
             var passHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password, HashType.SHA512, workFactor: 13);
-            var User = dto.Adapt<Domain.Entities.User>();
-            User.Password = passHash;  
-            User.Status = Helper.Enums.AccountStatus.PENDING;
-            User.Role = Helper.Enums.Roles.Admin;
-            User.Verified = false;
-            User.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
+            var user = dto.Adapt<Domain.Entities.User>();
+            user.Password = passHash;  
+            user.Status = Helper.Enums.AccountStatus.PENDING;
+            user.Role = Helper.Enums.Roles.USER;
+            user.Verified = false;
+            user.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
 
-            _unitOfWork.Users.Add(User);
+            _unitOfWork.Users.Add(user);
             await _unitOfWork.SaveAsync();
 
             // create user profile
-            var result = await _userProfileClient.CreateUserProfileAsync(User);
+            var result = await _userProfileClient.CreateUserProfileAsync(user);
             if (!result)
             {
                 return Utilities.ValidationErrorResponse("Failed to create user profile");
             }
             // Generate verification code and save in table: verificationCode
-
+            _unitOfWork.VerificationCode.Add(new VerificationCode
+            {
+                UserId = user.Id,
+                Code = CommonMethods.GenerateUniqueRandomNumber().ToString(),
+                Status = VerificationStatus.PENDING,
+                CreatedBy = _unitOfWork.GetLoggedInUserId(),
+                CreatedDate = DateTime.Now,
+                ExpiredAt = DateTime.Now.AddMinutes(5),
+            });
+            await _unitOfWork.SaveAsync();  
             // Send email to user for verification
 
-            var finalResponse = User.Adapt<UserAddDto>();
+            var finalResponse = user.Adapt<UserAddDto>();
             return Utilities.SuccessResponseForAdd(finalResponse);
         }
 

@@ -15,9 +15,8 @@ namespace Auth.API.DataAccess.DataContext
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
-        //public virtual DbSet<InventoryHistory> InventoryHistory { get; set; }
-        public virtual DbSet<Domain.Entities.User> Users { get; set; }   
-
+        public virtual DbSet<Domain.Entities.User> Users { get; set; }
+        public virtual DbSet<VerificationCode> VerificationCode { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -15,8 +15,8 @@ namespace Auth.API.DataAccess.UnitOfWorks
         long GetLoggedInUserRoleId();
         string GetLoggedInUserName();
         (bool, string) HasDependency(string schemaName, string table, string id);
-        IUserRepository Users { get; } 
-        //IInventoryHistoryRepository InventoryHistory { get; }  
+        IUserRepository Users { get; }
+        IVerificationCodeRepository VerificationCode { get; }  
         
     }
 }

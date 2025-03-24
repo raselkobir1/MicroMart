@@ -2,8 +2,8 @@
 {
     public enum VerificationStatus
     {
-        Pending = 1,
-        Used, 
-        Expired
+        PENDING = 1,
+        USED, 
+        EXPIRED
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace Auth.API.Helper
 {
@@ -62,6 +63,14 @@ namespace Auth.API.Helper
                 array[n] = value;
             }
             return new string(array);
+        }
+
+        public static int GenerateUniqueRandomNumber()
+        {
+            byte[] bytes = new byte[4];
+            RandomNumberGenerator.Fill(bytes);
+            int value = BitConverter.ToInt32(bytes, 0) & int.MaxValue; // Ensure positive number
+            return (value % 900000) + 100000; // Ensures 6-digit number
         }
     }
 }

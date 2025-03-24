@@ -98,11 +98,11 @@ namespace Auth.API.DataAccess.UnitOfWorks
             _httpContextAccessor = httpContextAccessor;
 
             Users = new UserRepository(dbContext, readDbContext);
-            //InventoryHistory = new InventoryHistoryRepository(dbContext, readDbContext);
+            VerificationCode = new VerificationCodeRepository(dbContext, readDbContext);
         }
 
-        public IUserRepository Users { get; private set; } 
+        public IUserRepository Users { get; private set; }
 
-        //public IInventoryHistoryRepository InventoryHistory { get; private set; }
+        public IVerificationCodeRepository VerificationCode { get; private set; }
     }
 }
