@@ -17,6 +17,7 @@ namespace Auth.API.DataAccess.DataContext
 
         public virtual DbSet<Domain.Entities.User> Users { get; set; }
         public virtual DbSet<VerificationCode> VerificationCode { get; set; }
+        public virtual DbSet<UserToken> UserTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

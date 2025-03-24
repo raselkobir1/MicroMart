@@ -37,10 +37,19 @@ namespace User.API.Manager.Implementation
                 return Utilities.ValidationErrorResponse("Auth user already exists");
 
             var User = dto.Adapt<Domain.Entities.User>();
+            User.Status = Helper.Enums.UserStatus.PENDING;
             User.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
+            try
+            {
+                _unitOfWork.Users.Add(User);
+                await _unitOfWork.SaveAsync();
+            }
+            catch (Exception ex)
+            {
 
-            _unitOfWork.Users.Add(User);
-            await _unitOfWork.SaveAsync();
+                throw ex;
+            }
+
 
             var finalResponse = User.Adapt<UserAddDto>();
             return Utilities.SuccessResponseForAdd(finalResponse);

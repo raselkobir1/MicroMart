@@ -16,7 +16,8 @@ namespace Auth.API.DataAccess.UnitOfWorks
         string GetLoggedInUserName();
         (bool, string) HasDependency(string schemaName, string table, string id);
         IUserRepository Users { get; }
-        IVerificationCodeRepository VerificationCode { get; }  
+        IVerificationCodeRepository VerificationCode { get; }
+        ILoginRepository Login { get; }   
         
     }
 }

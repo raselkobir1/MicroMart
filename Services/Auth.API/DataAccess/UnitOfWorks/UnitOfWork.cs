@@ -99,10 +99,13 @@ namespace Auth.API.DataAccess.UnitOfWorks
 
             Users = new UserRepository(dbContext, readDbContext);
             VerificationCode = new VerificationCodeRepository(dbContext, readDbContext);
+            Login = new LoginRepository(dbContext);
         }
 
         public IUserRepository Users { get; private set; }
 
         public IVerificationCodeRepository VerificationCode { get; private set; }
+
+        public ILoginRepository Login { get; private set; }
     }
 }

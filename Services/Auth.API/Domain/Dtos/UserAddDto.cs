@@ -9,7 +9,6 @@ namespace Auth.API.Domain.Dtos
         public string Email { get; set; }
         public string Password { get; set; }
         public Roles Role { get; set; }
-        public AccountStatus Status { get; set; }
     }
 
     public class UserAddDtoValidator : AbstractValidator<UserAddDto>

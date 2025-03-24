@@ -12,6 +12,7 @@ namespace Auth.API.Helper.Resources
         public const string IdsAlreadyExist = "Duplicate Id [{0}].";
         public const string IfBothZoro = "{0} value and {1} value both can't be 0 at a time.";
         public const string InactiveUser = "Your account is inactive, Please contact with administrator to reactivate.";
+        public const string NotVerifiedUser = "User must be verified first.";
         public const string IncorrectUser = "The email you entered is incorrect. Please try again.";
         public const string IncorrectOtp = "The OTP you entered is incorrect. Please try again.";
         public const string InvalidOtpSecret = "The OTP secret you entered is invalid.";
