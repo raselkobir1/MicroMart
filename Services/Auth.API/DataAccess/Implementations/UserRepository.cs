@@ -2,6 +2,7 @@
 using Auth.API.DataAccess.Interfaces;
 using Auth.API.Domain.Dtos;
 using Auth.API.Domain.Dtos.PaginatedResult;
+using Auth.API.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Auth.API.DataAccess.Implementations
@@ -38,6 +39,13 @@ namespace Auth.API.DataAccess.Implementations
 
             var totalRecords = await query.CountAsync();
             return new PagingResponseDto(result, totalRecords, dto.PageNumber, dto.PageSize);
+        }
+
+        public Task RemoveUser(User user)
+        {
+            _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
+            return Task.CompletedTask;
         }
     }
 }

@@ -9,6 +9,7 @@ using Auth.API.Helper.Client;
 using BCrypt.Net;
 using Auth.API.Domain.Entities;
 using Auth.API.Helper.Enums;
+using Auth.API.Domain.Dtos.Common;
 
 namespace Auth.API.Manager.Implementation
 {
@@ -16,10 +17,12 @@ namespace Auth.API.Manager.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserProfileServiceClient _userProfileClient;
-        public UserManager(IUnitOfWork unitOfWork, UserProfileServiceClient userProfileClient)
+        private readonly SendVerificationEmailClient _sendEmailClient;
+        public UserManager(IUnitOfWork unitOfWork, UserProfileServiceClient userProfileClient, SendVerificationEmailClient sendEmailClient)
         {
             _unitOfWork = unitOfWork;
-            _userProfileClient = userProfileClient; 
+            _userProfileClient = userProfileClient;
+            _sendEmailClient = sendEmailClient;
         }
         public Task<ResponseModel> GetDropdownForInventor()
         {
@@ -54,24 +57,32 @@ namespace Auth.API.Manager.Implementation
             await _unitOfWork.SaveAsync();
 
             // create user profile
-            var result = await _userProfileClient.CreateUserProfileAsync(user);
-            if (!result)
+            var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
+            if (!isSuccess)
             {
+                await _unitOfWork.Users.RemoveUser(user);
                 return Utilities.ValidationErrorResponse("Failed to create user profile");
             }
             // Generate verification code and save in table: verificationCode
+            string verificationCode = CommonMethods.GenerateUniqueRandomNumber().ToString();
             _unitOfWork.VerificationCode.Add(new VerificationCode
             {
                 UserId = user.Id,
-                Code = CommonMethods.GenerateUniqueRandomNumber().ToString(),
+                Code = verificationCode,
                 Status = VerificationStatus.PENDING,
                 CreatedBy = _unitOfWork.GetLoggedInUserId(),
                 CreatedDate = DateTime.Now,
                 ExpiredAt = DateTime.Now.AddMinutes(5),
             });
-            await _unitOfWork.SaveAsync();  
+            await _unitOfWork.SaveAsync();
             // Send email to user for verification
-
+            var emailSendDto = new EmailSendDto
+            {
+                To = new List<string> { user.Email },
+                Subject = "User registration verification Code",
+                Body = $"Your verification code is: {verificationCode}",
+            };
+            var issuccess = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
             var finalResponse = user.Adapt<UserAddDto>();
             return Utilities.SuccessResponseForAdd(finalResponse);
         }

@@ -14,7 +14,7 @@ namespace Notification.API.Controllers
         {
             _emailService = emailService;
         }
-        [HttpPost("Add")]
+        [HttpPost("Send")]
         public async Task<IActionResult> SendEmailNotification(EmailDto dto)
         {
             var response = await _emailService.SendEmailAsync(dto);

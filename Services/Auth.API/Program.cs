@@ -23,6 +23,10 @@ builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:4004/");
 });
+builder.Services.AddHttpClient<SendVerificationEmailClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:4005/");
+});
 
 
 builder.Services.AddControllers();
