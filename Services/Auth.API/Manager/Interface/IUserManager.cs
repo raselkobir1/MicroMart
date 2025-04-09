@@ -12,5 +12,6 @@ namespace Auth.API.Manager.Interface
         Task<ResponseModel> UserGetAll(UserFilterDto dto);
         Task<ResponseModel> GetDropdownForInventor();
         Task<ResponseModel> AuthUserVerification(UserVerificationDto dto);
+        Task<ResponseModel> ResendVerification(string email); 
     }
 }

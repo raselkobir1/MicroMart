@@ -75,6 +75,51 @@ namespace Auth.API.Manager.Implementation
             throw new NotImplementedException();
         }
 
+        public async Task<ResponseModel> ResendVerification(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                    return Utilities.ValidationErrorResponse("Email is required");
+
+                var user = await _unitOfWork.Users.GetWhere(x => x.Email.Trim().ToLower() == email.Trim().ToLower());
+                if (user == null)
+                    return Utilities.NotFoundResponse("User not found");
+
+                var isVerified = await _unitOfWork.VerificationCode.Any(x => x.UserId == user.Id && x.Status == VerificationStatus.USED);
+                if (isVerified)
+                    return Utilities.ValidationErrorResponse("User already verified");
+
+                var verificationCode = new VerificationCode
+                    {
+                        UserId = user.Id,
+                        Code = CommonMethods.GenerateUniqueRandomNumber().ToString(),
+                        Status = VerificationStatus.PENDING,
+                        CreatedBy = _unitOfWork.GetLoggedInUserId(),
+                        CreatedDate = CommonMethods.GetCurrentTime(),
+                        ExpiredAt = DateTime.Now.AddMinutes(5),
+                    };
+                _unitOfWork.VerificationCode.Update(verificationCode);
+
+                var emailSendDto = new EmailSendDto
+                {
+                    To = new List<string> { user.Email },
+                    Subject = "User registration verification Code",
+                    Body = $"Your verification code is: {verificationCode.Code}",
+                };
+
+                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                if (!isSendEmail)
+                    return Utilities.SuccessResponse("Verification code send your email", new { IsResendCode = false });
+
+                return Utilities.SuccessResponse("Verification code send faild", new { IsResendCode = true });
+            }
+            catch (Exception)
+            {
+                return Utilities.SuccessResponse("Verification code send faild", new { IsResendCode = false });
+            }
+        }
+
         public async Task<ResponseModel> UserAdd(UserAddDto dto)
         {
             try

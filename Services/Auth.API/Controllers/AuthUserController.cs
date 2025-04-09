@@ -55,5 +55,12 @@ namespace Auth.API.Controllers
             var response = await _userManager.AuthUserVerification(dto);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("ResendVerification")]
+        public async Task<IActionResult> ResendVerification(string email) 
+        {
+            var response = await _userManager.ResendVerification(email);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
