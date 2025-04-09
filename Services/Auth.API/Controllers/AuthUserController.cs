@@ -48,5 +48,12 @@ namespace Auth.API.Controllers
             var response = await _userManager.UserGetAll(dto);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("Verification")]
+        public async Task<IActionResult> AuthUserVerification(UserVerificationDto dto)
+        {
+            var response = await _userManager.AuthUserVerification(dto);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

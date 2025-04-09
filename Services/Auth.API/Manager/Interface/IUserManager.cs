@@ -10,6 +10,7 @@ namespace Auth.API.Manager.Interface
         Task<ResponseModel> UserDelete(long id);
         Task<ResponseModel> UserGetById(long id);
         Task<ResponseModel> UserGetAll(UserFilterDto dto);
-        Task<ResponseModel> GetDropdownForInventor(); 
+        Task<ResponseModel> GetDropdownForInventor();
+        Task<ResponseModel> AuthUserVerification(UserVerificationDto dto);
     }
 }

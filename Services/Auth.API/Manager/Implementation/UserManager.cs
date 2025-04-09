@@ -24,6 +24,52 @@ namespace Auth.API.Manager.Implementation
             _userProfileClient = userProfileClient;
             _sendEmailClient = sendEmailClient;
         }
+
+        public async Task<ResponseModel> AuthUserVerification(UserVerificationDto dto)
+        {
+            try
+            {
+                #region Validation
+                var validationResult = new UserVerificationDtoValidator().Validate(dto);
+                if (!validationResult.IsValid)
+                    return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
+                #endregion
+                var user = await _unitOfWork.Users.GetWhere(x => x.Email.Trim().ToLower() == dto.Email.Trim().ToLower());
+                if (user == null)
+                    return Utilities.NotFoundResponse("User not found");
+
+                var verificationCode = await _unitOfWork.VerificationCode.GetWhere(x => x.UserId == user.Id && x.Code == dto.VerificationCode && x.Status == VerificationStatus.PENDING);
+                if (verificationCode == null)
+                    return Utilities.NotFoundResponse("Verification code not found");
+
+                if (verificationCode.ExpiredAt < DateTime.Now)
+                    return Utilities.ValidationErrorResponse("Verification code expired");
+
+                if (verificationCode.Status == VerificationStatus.USED)
+                    return Utilities.ValidationErrorResponse("Verification code already verified");
+
+                _unitOfWork.BeginTransaction();
+                verificationCode.Status = VerificationStatus.USED;
+                verificationCode.VerifiedAt = CommonMethods.GetCurrentTime();
+                verificationCode.SetCommonPropertiesForUpdate(_unitOfWork.GetLoggedInUserId());
+                _unitOfWork.VerificationCode.Update(verificationCode);
+
+                user.Verified = true;
+                user.Status = AccountStatus.ACTIVE;
+                user.SetCommonPropertiesForUpdate(_unitOfWork.GetLoggedInUserId());
+                _unitOfWork.Users.Update(user);
+
+                await _unitOfWork.SaveAsync();
+                _unitOfWork.CommitTransaction();
+                return Utilities.SuccessResponseForUpdate(new { IsVerified = true });
+            }
+            catch (Exception)
+            {
+                _unitOfWork.RollBackTransaction();
+                return Utilities.SuccessResponseForUpdate(new { IsVerified = false });
+            }
+        }
+
         public Task<ResponseModel> GetDropdownForInventor()
         {
             throw new NotImplementedException();
@@ -31,60 +77,73 @@ namespace Auth.API.Manager.Implementation
 
         public async Task<ResponseModel> UserAdd(UserAddDto dto)
         {
-            #region Validation
-            var validationResult = new UserAddDtoValidator().Validate(dto);
-
-            if (!validationResult.IsValid)
-                return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
-
-            #endregion
-
-            if (await _unitOfWork.Users.Any(x => x.Email.Trim() == dto.Email.Trim()))
-                return Utilities.ValidationErrorResponse("Auth user email already exists");
-
-            if (await _unitOfWork.Users.Any(x => x.UserName.Trim() == dto.UserName.Trim()))
-                return Utilities.ValidationErrorResponse("Auth user name already exists");
-
-            var passHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password, HashType.SHA512, workFactor: 13);
-            var user = dto.Adapt<Domain.Entities.User>();
-            user.Password = passHash;  
-            user.Status = Helper.Enums.AccountStatus.PENDING;
-            user.Role = Helper.Enums.Roles.USER;
-            user.Verified = false;
-            user.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
-
-            _unitOfWork.Users.Add(user);
-            await _unitOfWork.SaveAsync();
-
-            // create user profile
-            var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
-            if (!isSuccess)
+            try
             {
-                await _unitOfWork.Users.RemoveUser(user);
-                return Utilities.ValidationErrorResponse("Failed to create user profile");
+                #region Validation
+                var validationResult = new UserAddDtoValidator().Validate(dto);
+
+                if (!validationResult.IsValid)
+                    return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
+
+                #endregion
+
+                if (await _unitOfWork.Users.Any(x => x.Email.Trim() == dto.Email.Trim()))
+                    return Utilities.ValidationErrorResponse("Auth user email already exists");
+
+                if (await _unitOfWork.Users.Any(x => x.UserName.Trim() == dto.UserName.Trim()))
+                    return Utilities.ValidationErrorResponse("Auth user name already exists");
+
+                var passHash = BCrypt.Net.BCrypt.EnhancedHashPassword(dto.Password, HashType.SHA512, workFactor: 13);
+                var user = dto.Adapt<Domain.Entities.User>();
+                user.Password = passHash;
+                user.Status = Helper.Enums.AccountStatus.PENDING;
+                user.Role = Helper.Enums.Roles.USER;
+                user.Verified = false;
+                user.SetCommonPropertiesForCreate(_unitOfWork.GetLoggedInUserId());
+
+                _unitOfWork.BeginTransaction();
+                _unitOfWork.Users.Add(user);
+                await _unitOfWork.SaveAsync();
+
+                // create user profile
+                var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
+                if (!isSuccess)
+                {
+                    //await _unitOfWork.Users.RemoveUser(user);
+                    _unitOfWork.RollBackTransaction();
+                    return Utilities.ValidationErrorResponse("Failed to create user profile");
+                }
+                // Generate verification code and save in table: verificationCode
+                string verificationCode = CommonMethods.GenerateUniqueRandomNumber().ToString();
+                _unitOfWork.VerificationCode.Add(new VerificationCode
+                {
+                    UserId = user.Id,
+                    Code = verificationCode,
+                    Status = VerificationStatus.PENDING,
+                    CreatedBy = _unitOfWork.GetLoggedInUserId(),
+                    CreatedDate = DateTime.Now,
+                    ExpiredAt = DateTime.Now.AddMinutes(5),
+                });
+                await _unitOfWork.SaveAsync();
+                _unitOfWork.CommitTransaction();
+                // Send email to user for verification
+                var emailSendDto = new EmailSendDto
+                {
+                    To = new List<string> { user.Email },
+                    Subject = "User registration verification Code",
+                    Body = $"Your verification code is: {verificationCode}",
+                };
+
+                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+
+                var finalResponse = user.Adapt<UserAddDto>();
+                return Utilities.SuccessResponseForAdd(finalResponse);
             }
-            // Generate verification code and save in table: verificationCode
-            string verificationCode = CommonMethods.GenerateUniqueRandomNumber().ToString();
-            _unitOfWork.VerificationCode.Add(new VerificationCode
+            catch (Exception)
             {
-                UserId = user.Id,
-                Code = verificationCode,
-                Status = VerificationStatus.PENDING,
-                CreatedBy = _unitOfWork.GetLoggedInUserId(),
-                CreatedDate = DateTime.Now,
-                ExpiredAt = DateTime.Now.AddMinutes(5),
-            });
-            await _unitOfWork.SaveAsync();
-            // Send email to user for verification
-            var emailSendDto = new EmailSendDto
-            {
-                To = new List<string> { user.Email },
-                Subject = "User registration verification Code",
-                Body = $"Your verification code is: {verificationCode}",
-            };
-            var issuccess = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
-            var finalResponse = user.Adapt<UserAddDto>();
-            return Utilities.SuccessResponseForAdd(finalResponse);
+                _unitOfWork.RollBackTransaction();
+                throw;
+            }
         }
 
         public async Task<ResponseModel> UserDelete(long id)

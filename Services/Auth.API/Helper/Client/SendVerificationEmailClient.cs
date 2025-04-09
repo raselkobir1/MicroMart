@@ -16,13 +16,7 @@ namespace Auth.API.Helper.Client
 
         public async Task<bool> SendVerificationCodeAsync(EmailSendDto sendDto)  
         {
-            var sendVerificationCodeRequest = new
-            {
-                To = sendDto.To,
-                Subject = sendDto.Subject,
-                Body = sendDto.Body,
-            };
-            var response = await _httpClient.PostAsJsonAsync("api/SendEmail/Send", sendVerificationCodeRequest);
+            var response = await _httpClient.PostAsJsonAsync("api/SendEmail/Send", sendDto);
 
             if (response.IsSuccessStatusCode)
             {
