@@ -24,6 +24,13 @@ namespace Auth.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [HttpPost("ValidateToken")]
+        public async Task<IActionResult> ValidateToken(string jwtToken)
+        {
+            var response = await _login.ValidateToken(jwtToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
         [AllowAnonymous]
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshJwtToken(AccessTokenFromRefreshTokenDto dto)

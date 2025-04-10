@@ -9,11 +9,13 @@ using Auth.API.Manager.Interface;
 using Auth.WebAPI.Domain.Dto.Login;
 using BCrypt.Net;
 using Mapster;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 
 namespace Auth.API.Manager.Implementation
@@ -22,11 +24,16 @@ namespace Auth.API.Manager.Implementation
     {
         private readonly JwtTokenConfiguration _jwtTokenConfiguration;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly byte[] _key;
+        private readonly DateTime _expireTime;
 
         public LoginManager(IUnitOfWork unitOfWork, IOptionsSnapshot<JwtTokenConfiguration> tokenAppsettingConfig)
         {
             _unitOfWork = unitOfWork;
             _jwtTokenConfiguration = tokenAppsettingConfig.Value;
+            _key = Encoding.ASCII.GetBytes(_jwtTokenConfiguration.SigningKey);
+            _expireTime = CommonMethods.GetCurrentTime().AddMinutes(Convert.ToDouble(_jwtTokenConfiguration.JWTTokenExpirationMinutes));
+
         }
 
         public async Task<ResponseModel> Login(LoginRequestDto dto)
@@ -109,11 +116,46 @@ namespace Auth.API.Manager.Implementation
             return Utilities.SuccessResponse(null, finalResponse);
         }
 
+        public async Task<ResponseModel> ValidateToken(string jwtToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = GetValidationParameters();
+
+            try
+            {
+                ClaimsPrincipal principal = tokenHandler.ValidateToken(jwtToken, validationParameters, out SecurityToken validatedToken);
+                var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+                if(string.IsNullOrEmpty(email))
+                    return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
+
+                var user = await _unitOfWork.Users.GetWhere(x => x.Email.Trim().ToLower() == email.Trim().ToLower());
+                if (user == null)
+                    return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
+
+                return Utilities.SuccessResponse("Token varification successfully",new { Email = user.Email, UserName = user.UserName });
+            }
+            catch (Exception ex)
+            {
+                return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
+            }
+        }
+
+        private TokenValidationParameters GetValidationParameters()
+        {
+            return new TokenValidationParameters()
+            {
+                ValidateLifetime = true, 
+                ValidateIssuerSigningKey = true, 
+                ValidateAudience = false, 
+                ValidateIssuer = false,  
+                ValidIssuer = _jwtTokenConfiguration.Issuer,
+                ValidAudience = _jwtTokenConfiguration.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(_key)
+            };
+        }
         private (string, DateTime) GenerateJWTTokensAsync(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtTokenConfiguration.SigningKey);
-            var expiryTime = CommonMethods.GetCurrentTime().AddMinutes(Convert.ToDouble(_jwtTokenConfiguration.JWTTokenExpirationMinutes));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(
@@ -128,10 +170,10 @@ namespace Auth.API.Manager.Implementation
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 ]),
 
-                Expires = expiryTime,
+                Expires = _expireTime,
                 Issuer = _jwtTokenConfiguration.Issuer,
                 Audience = _jwtTokenConfiguration.Audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_key), SecurityAlgorithms.HmacSha256Signature),
 
             };
             var accessToken = tokenHandler.WriteToken(tokenHandler.CreateToken(tokenDescriptor));

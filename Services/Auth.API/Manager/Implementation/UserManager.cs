@@ -61,6 +61,15 @@ namespace Auth.API.Manager.Implementation
 
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
+
+                var emailSendDto = new EmailSendDto
+                {
+                    To = new List<string> { user.Email },
+                    Subject = "Verification success",
+                    Body = $"Thank you. you are successfully verified.",
+                };
+                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+
                 return Utilities.SuccessResponseForUpdate(new { IsVerified = true });
             }
             catch (Exception)
@@ -75,7 +84,7 @@ namespace Auth.API.Manager.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseModel> ResendVerification(string email)
+        public async Task<ResponseModel> ResendVerificationCode(string email)
         {
             try
             {
@@ -110,7 +119,7 @@ namespace Auth.API.Manager.Implementation
 
                 var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
                 if (!isSendEmail)
-                    return Utilities.SuccessResponse("Verification code send your email", new { IsResendCode = false });
+                    return Utilities.SuccessResponse("Verification code send successfully", new { IsResendCode = false }); 
 
                 return Utilities.SuccessResponse("Verification code send faild", new { IsResendCode = true });
             }

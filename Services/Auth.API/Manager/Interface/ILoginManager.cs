@@ -6,6 +6,7 @@ namespace Auth.API.Manager.Interface
     public interface ILoginManager
     {
         Task<ResponseModel> Login(LoginRequestDto dto);
+        Task<ResponseModel> ValidateToken(string jwtToken);
         Task<ResponseModel> RefreshJwtToken(AccessTokenFromRefreshTokenDto dto);
         Task<ResponseModel> Logout(LogoutRequestDto dto);
     }

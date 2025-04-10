@@ -59,7 +59,7 @@ namespace Auth.API.Controllers
         [HttpPost("ResendVerification")]
         public async Task<IActionResult> ResendVerification(string email) 
         {
-            var response = await _userManager.ResendVerification(email);
+            var response = await _userManager.ResendVerificationCode(email);
             return StatusCode(response.StatusCode, response);
         }
     }
