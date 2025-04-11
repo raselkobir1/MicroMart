@@ -42,7 +42,7 @@ namespace Inventory.API.DataAccess.UnitOfWorks
 
         public long GetLoggedInUserId()
         {
-            var userId = "1"; //_httpContextAccessor?.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _httpContextAccessor?.HttpContext?.Request.Headers["X-UserId"].ToString();
             if (string.IsNullOrWhiteSpace(userId))
                 throw new UnauthorizedAccessException();
             return Convert.ToInt64(userId);
@@ -57,7 +57,7 @@ namespace Inventory.API.DataAccess.UnitOfWorks
 
         public string GetLoggedInUserName()
         {
-            var userName = _httpContextAccessor?.HttpContext?.User.FindFirstValue("UserName");
+            var userName = _httpContextAccessor?.HttpContext?.Request.Headers["X-UserName"].ToString();
             if (!string.IsNullOrWhiteSpace(userName))
                 return userName;
 
