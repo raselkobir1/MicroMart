@@ -1,3 +1,5 @@
+using ApiGateway.Helper.Client;
+using ApiGateway.Helper.Middleware;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -11,12 +13,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//builder.Services.AddAuthentication(); // if needed
+//builder.Services.AddAuthorization();
+
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 builder.Services.AddOcelot(builder.Configuration)
     .AddCacheManager(x =>
     {
         x.WithDictionaryHandle();
     });
+
+builder.Services.AddHttpClient<ValidateAuthorizeClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:4003/");
+});
 
 var app = builder.Build();
 
@@ -28,7 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<AuthorizationMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

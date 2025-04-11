@@ -125,14 +125,21 @@ namespace Auth.API.Manager.Implementation
             {
                 ClaimsPrincipal principal = tokenHandler.ValidateToken(jwtToken, validationParameters, out SecurityToken validatedToken);
                 var email = principal.FindFirst(ClaimTypes.Email)?.Value;
-                if(string.IsNullOrEmpty(email))
+                var role = principal.FindFirst(c => c.Type == ClaimTypes.Role)?.Value;
+
+                if (string.IsNullOrEmpty(email))
                     return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
 
                 var user = await _unitOfWork.Users.GetWhere(x => x.Email.Trim().ToLower() == email.Trim().ToLower());
                 if (user == null)
                     return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
 
-                return Utilities.SuccessResponse("Token varification successfully",new {UserId = user.Id, Email = user.Email, Role = user.Role, UserName = user.UserName });
+                //if (role != "Admin")
+                //{
+                //    return Utilities.ValidationErrorResponse(CommonMessage.ForbiddenResponse);
+                //}
+
+                return Utilities.SuccessResponse("Token varification successfully",new {UserId = user.Id, Email = user.Email, Role = user.Role, UserName = user.UserName});
             }
             catch (Exception ex)
             {

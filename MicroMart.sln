@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User.API", "Services\User.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.API", "Services\Auth.API\Auth.API.csproj", "{6A8B4AB0-03E3-4F14-ABA1-092D41DA8558}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notification.API", "Services\Notification.API\Notification.API.csproj", "{5CE2ED00-6C74-42C0-9DEC-025D1A41B07F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.API", "Services\Notification.API\Notification.API.csproj", "{5CE2ED00-6C74-42C0-9DEC-025D1A41B07F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

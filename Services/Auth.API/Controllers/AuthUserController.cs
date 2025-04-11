@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Auth.API.Domain.Dtos;
 using Auth.API.Manager.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Auth.API.Controllers
 {
@@ -49,13 +50,14 @@ namespace Auth.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [AllowAnonymous]
         [HttpPost("Verification")]
         public async Task<IActionResult> AuthUserVerification(UserVerificationDto dto)
         {
             var response = await _userManager.AuthUserVerification(dto);
             return StatusCode(response.StatusCode, response);
         }
-
+        [AllowAnonymous]
         [HttpPost("ResendVerification")]
         public async Task<IActionResult> ResendVerification(string email) 
         {

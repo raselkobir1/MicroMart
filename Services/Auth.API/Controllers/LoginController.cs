@@ -26,7 +26,7 @@ namespace Auth.API.Controllers
 
         [AllowAnonymous]
         [HttpPost("ValidateToken")]
-        public async Task<IActionResult> ValidateToken(string jwtToken)
+        public async Task<IActionResult> ValidateToken([FromBody] string jwtToken)
         {
             var response = await _login.ValidateToken(jwtToken);
             return StatusCode(response.StatusCode, response);
