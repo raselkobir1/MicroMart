@@ -43,5 +43,11 @@ namespace Auth.API.DataAccess.Implementations
         {
             return await _dbContext.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task SaveLoginHistory(LoginHistory loginHistory)
+        {
+            _dbContext.Add(loginHistory);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

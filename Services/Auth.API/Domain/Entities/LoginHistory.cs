@@ -3,20 +3,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Auth.API.Domain.Entities
 {
-    public class LoginHistory : BaseEntity
+    public class LoginHistory 
     {
+        public long Id { get; set; }
         public long UserId { get; set; }
-        public string IpAddress { get; set; }
-        public string UserAgent { get; set; }
+        public string Email { get; set; }
+        public string? IpAddress { get; set; }
+        public string? UserAgent { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public User User { get; set; }
     }
-    public class LoginHistoryConfiguration : BaseEntityTypeConfiguration<LoginHistory>
+    public class LoginHistoryConfiguration : IEntityTypeConfiguration<LoginHistory>
     {
-        public override void Configure(EntityTypeBuilder<LoginHistory> builder)
+        public void Configure(EntityTypeBuilder<LoginHistory> builder)
         {
-            base.Configure(builder);
             builder.ToTable("LoginHistory", "user");
+            builder.HasKey(t => t.Id);
         }
     }
 }

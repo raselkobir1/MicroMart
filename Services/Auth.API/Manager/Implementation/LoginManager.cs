@@ -1,4 +1,5 @@
 ﻿using Auth.API.DataAccess.UnitOfWorks;
+using Auth.API.DataAcess.DataContext;
 using Auth.API.Domain.Dto.Common;
 using Auth.API.Domain.Entities;
 using Auth.API.Helper;
@@ -9,13 +10,11 @@ using Auth.API.Manager.Interface;
 using Auth.WebAPI.Domain.Dto.Login;
 using BCrypt.Net;
 using Mapster;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using System.Text;
 
 namespace Auth.API.Manager.Implementation
@@ -36,7 +35,7 @@ namespace Auth.API.Manager.Implementation
 
         }
 
-        public async Task<ResponseModel> Login(LoginRequestDto dto)
+        public async Task<ResponseModel> Login(LoginRequestDto dto, string? userAgent, string? ipAddress)
         {
             #region User Validation
             if (string.IsNullOrEmpty(dto.Email))
@@ -76,6 +75,8 @@ namespace Auth.API.Manager.Implementation
             };
 
             await _unitOfWork.Login.SaveUserToken(token);
+            var loginHistory = new LoginHistory { UserId = user.Id, UserAgent = userAgent,IpAddress = ipAddress, CreatedAt= CommonMethods.GetCurrentTime(), Email = user.Email };
+            await _unitOfWork.Login.SaveLoginHistory(loginHistory);
 
             var authResponse = token.Adapt<AuthResponse>();
             return Utilities.SuccessResponse("Login successful", authResponse);

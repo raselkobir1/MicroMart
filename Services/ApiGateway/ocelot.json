@@ -1,10 +1,6 @@
 ﻿{
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001",
-    "AuthenticationOptions": {
-      "AuthenticationProviderKey": "Bearer",
-      "AllowedScopes": []
-    }
+    "BaseUrl": "http://localhost:8001"
   },
   "Routes": [
     //--------------------------Product Service--------------------------
@@ -219,7 +215,7 @@
     },
     {
       "UpstreamPathTemplate": "/AuthUser/Verification",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/AuthUser/Verification",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -231,7 +227,7 @@
     },
     {
       "UpstreamPathTemplate": "/AuthUser/ResendVerification",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/AuthUser/ResendVerification",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -243,7 +239,7 @@
     },
     {
       "UpstreamPathTemplate": "/Login/UserLogin",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/Login/UserLogin",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -251,15 +247,11 @@
           "Host": "localhost",
           "Port": 4003
         }
-      ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "",
-        "AllowedScopes": []
-      }
+      ]
     },
     {
       "UpstreamPathTemplate": "/Login/ValidateToken",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/Login/ValidateToken",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -271,7 +263,7 @@
     },
     {
       "UpstreamPathTemplate": "/Login/RefreshToken",
-      "UpstreamHttpMethod": [ "GET" ],
+      "UpstreamHttpMethod": [ "POST" ],
       "DownstreamPathTemplate": "/api/Login/RefreshToken",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -283,8 +275,8 @@
     },
     {
       "UpstreamPathTemplate": "/Login/Logout",
-      "UpstreamHttpMethod": [ "GET" ],
-      "DownstreamPathTemplate": "/api/Login/Logout",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/Login/UserLogout",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {

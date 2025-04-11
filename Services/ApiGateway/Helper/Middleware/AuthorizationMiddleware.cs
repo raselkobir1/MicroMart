@@ -21,7 +21,7 @@ namespace ApiGateway.Helper.Middleware
         {
             var requestPath = context.Request.Path;
 
-            if (_whitelistedPaths.Any(p => requestPath.StartsWithSegments(p, StringComparison.OrdinalIgnoreCase)))
+            if (_whitelistedPaths.Any(p => requestPath.Equals(p, StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
                 return;
@@ -44,6 +44,10 @@ namespace ApiGateway.Helper.Middleware
                     await context.Response.WriteAsync("Invalid token.");
                     return;
                 }
+                context.Request.Headers.Add("X-UserId", authResponse.Data.UserId.ToString());
+                context.Request.Headers.Add("X-Email", authResponse.Data.Email.ToString());
+                context.Request.Headers.Add("X-Role", authResponse.Data.Role.ToString());
+                context.Request.Headers.Add("X-UserName", authResponse.Data.UserName.ToString());
             }
             catch
             {

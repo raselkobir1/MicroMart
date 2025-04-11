@@ -20,7 +20,9 @@ namespace Auth.API.Controllers
         [HttpPost("UserLogin")]
         public async Task<IActionResult> UserLogin(LoginRequestDto dto)
         {
-            var response = await _login.Login(dto);
+            var userAgent = Request.Headers["User-Agent"].ToString();
+            var userIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            var response = await _login.Login(dto, userAgent, userIp);
             return StatusCode(response.StatusCode, response);
         }
 
