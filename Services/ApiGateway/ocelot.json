@@ -3,6 +3,7 @@
     "BaseUrl": "http://localhost:8001"
   },
   "Routes": [
+    //--------------------------Product Service--------------------------
     {
       "UpstreamPathTemplate": "/product/add",
       "UpstreamHttpMethod": [ "POST" ],
@@ -32,7 +33,12 @@
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamPathTemplate": "/api/product/getall",
       "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [{ "Host": "localhost","Port": 4001 }],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4001
+        }
+      ],
       "FileCacheOptions": {
         "TtlSeconds": 10
       },
@@ -67,6 +73,7 @@
         }
       ]
     },
+    //--------------------------Inventory Service--------------------------
     {
       "UpstreamPathTemplate": "/inventory/add",
       "UpstreamHttpMethod": [ "POST" ],
@@ -135,6 +142,171 @@
         "PeriodTimespan": 10,
         "Limit": 3
       }
+    },
+    //--------------------------AuthUser Service--------------------------
+    {
+      "UpstreamPathTemplate": "/AuthUser/add",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/AuthUser/add",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/AuthUser/update",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/AuthUser/update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/AuthUser/delete/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/AuthUser/delete/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/AuthUser/get/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/AuthUser/get/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4003
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/AuthUser/getall",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/AuthUser/getall",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4003
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "PeriodTimespan": 10,
+        "Limit": 3
+      }
+    },
+    //--------------------------User Service------------------------------
+    {
+      "UpstreamPathTemplate": "/User/add",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/User/add",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/User/update",
+      "UpstreamHttpMethod": [ "PUT" ],
+      "DownstreamPathTemplate": "/api/User/update",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/User/delete/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/User/delete/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/User/get/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/User/get/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4004
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/User/getall",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/User/getall",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4004
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "10s",
+        "PeriodTimespan": 10,
+        "Limit": 3
+      }
+    },
+    //--------------------------Notification Service------------------------------
+    {
+      "UpstreamPathTemplate": "/SendEmail/SendWithAttachment",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/SendEmail/SendWithAttachment",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4005
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/SendEmail/Send",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/SendEmail/Send",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4005
+        }
+      ]
     }
   ],
   "SwaggerEndPoints": [
@@ -145,6 +317,18 @@
     {
       "Name": "Inventory API",
       "Url": "http://localhost:4002/swagger/v1/swagger.json"
+    },
+    {
+      "Name": "AuthUser API",
+      "Url": "http://localhost:4003/swagger/v1/swagger.json"
+    },
+    {
+      "Name": "User API",
+      "Url": "http://localhost:4004/swagger/v1/swagger.json"
+    },
+    {
+      "Name": "Notification API",
+      "Url": "http://localhost:4005/swagger/v1/swagger.json"
     }
   ]
 }

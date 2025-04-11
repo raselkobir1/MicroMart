@@ -132,7 +132,7 @@ namespace Auth.API.Manager.Implementation
                 if (user == null)
                     return Utilities.ValidationErrorResponse(CommonMessage.InvalidToken);
 
-                return Utilities.SuccessResponse("Token varification successfully",new { Email = user.Email, UserName = user.UserName });
+                return Utilities.SuccessResponse("Token varification successfully",new {UserId = user.Id, Email = user.Email, Role = user.Role, UserName = user.UserName });
             }
             catch (Exception ex)
             {

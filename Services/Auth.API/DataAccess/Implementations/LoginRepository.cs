@@ -19,7 +19,7 @@ namespace Auth.API.DataAccess.Implementations
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<UserToken?> GetUserToken(string refreshToken)
+        public async Task<UserToken> GetUserToken(string refreshToken)
         {
             return await _dbContext.UserTokens.Where(x => x.RefreshToken == refreshToken).FirstOrDefaultAsync();
         }

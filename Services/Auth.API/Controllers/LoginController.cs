@@ -24,6 +24,7 @@ namespace Auth.API.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [AllowAnonymous]
         [HttpPost("ValidateToken")]
         public async Task<IActionResult> ValidateToken(string jwtToken)
         {
