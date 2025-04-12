@@ -1,4 +1,5 @@
 ﻿using ApiGateway.Helper.Client;
+using Ocelot.RequestId;
 
 namespace ApiGateway.Helper.Middleware
 {
@@ -20,6 +21,7 @@ namespace ApiGateway.Helper.Middleware
         public async Task InvokeAsync(HttpContext context)
         {
             var requestPath = context.Request.Path;
+            context.Request.Headers.Add("X-Forwarded-For", context.Connection.RemoteIpAddress?.ToString());
 
             if (_whitelistedPaths.Any(p => requestPath.Equals(p, StringComparison.OrdinalIgnoreCase)))
             {
@@ -44,10 +46,10 @@ namespace ApiGateway.Helper.Middleware
                     await context.Response.WriteAsync("Invalid token.");
                     return;
                 }
-                context.Request.Headers.Add("X-UserId", authResponse.Data.UserId.ToString());
-                context.Request.Headers.Add("X-Email", authResponse.Data.Email.ToString());
-                context.Request.Headers.Add("X-Role", authResponse.Data.Role.ToString());
-                context.Request.Headers.Add("X-UserName", authResponse.Data.UserName.ToString());
+                context.Request.Headers.Add("x-user-id", authResponse.Data.UserId.ToString());
+                context.Request.Headers.Add("x-user-email", authResponse.Data.Email.ToString());
+                context.Request.Headers.Add("x-user-role", authResponse.Data.Role.ToString());
+                context.Request.Headers.Add("x-user-name", authResponse.Data.UserName.ToString());
             }
             catch
             {

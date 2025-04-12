@@ -7,6 +7,8 @@ using Auth.API.Helper.ServiceFilter;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Auth.API.Helper.Client;
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,14 @@ builder.Services.AddEndpointsApiExplorer();
 // Add services to the container.
 builder.Services.AddPersistenceService(builder.Configuration);
 
+//builder.Services.Configure<ForwardedHeadersOptions>(options =>
+//{
+//    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+//    options.ForwardedForHeaderName = "X-Forwarded-For";
+//    options.KnownProxies.Add(IPAddress.Parse("127.0.0.1")); // Localhost (for dev) or API Gateway IP (docker container)
+//    options.ForwardedHeaders = ForwardedHeaders.All;
+//    //options.ForwardedHeadersRemoval = Microsoft.AspNetCore.HttpOverrides.ForwardedHeadersRemoval.None;
+//});
 
 builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
 {
@@ -48,6 +58,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.UseForwardedHeaders();
+
 app.MapHealthChecks("/health");
 app.UseHttpsRedirection();
 

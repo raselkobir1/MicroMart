@@ -42,7 +42,7 @@ namespace Product.API.DataAccess.UnitOfWorks
 
         public long GetLoggedInUserId()
         {
-            var userId = _httpContextAccessor?.HttpContext?.Request.Headers["X-UserId"].ToString();
+            var userId = _httpContextAccessor?.HttpContext?.Request.Headers["x-user-id"].ToString();
             if (string.IsNullOrWhiteSpace(userId))
                 throw new UnauthorizedAccessException();
             return Convert.ToInt64(userId);
@@ -57,7 +57,7 @@ namespace Product.API.DataAccess.UnitOfWorks
 
         public string GetLoggedInUserName()
         {
-            var userName = _httpContextAccessor?.HttpContext?.Request.Headers["X-UserName"].ToString();
+            var userName = _httpContextAccessor?.HttpContext?.Request.Headers["x-user-name"].ToString();
             if (!string.IsNullOrWhiteSpace(userName))
                 return userName;
 

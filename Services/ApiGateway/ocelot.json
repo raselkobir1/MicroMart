@@ -1,6 +1,12 @@
 ﻿{
   "GlobalConfiguration": {
     "BaseUrl": "http://localhost:8001"
+    //"DownstreamScheme": "http",
+    //"HttpHandlerOptions": {
+    //  "UseProxy": true,
+    //  "UseTracing": true,
+    //  "AllowAutoRedirect": false
+    //}
   },
   "Routes": [
     //--------------------------Product Service--------------------------

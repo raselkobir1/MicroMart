@@ -2,6 +2,7 @@
 using Auth.WebAPI.Domain.Dto.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Auth.API.Controllers
 {
@@ -22,6 +23,9 @@ namespace Auth.API.Controllers
         {
             var userAgent = Request.Headers["User-Agent"].ToString();
             var userIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (Request.Headers.ContainsKey("X-Forwarded-For"))
+                userIp = Request.Headers["X-Forwarded-For"];
+
             var response = await _login.Login(dto, userAgent, userIp);
             return StatusCode(response.StatusCode, response);
         }

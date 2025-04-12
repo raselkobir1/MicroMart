@@ -48,6 +48,9 @@ namespace Auth.API.Manager.Implementation
             if (user == null)
                 return Utilities.ValidationErrorResponse(CommonMessage.IncorrectUser);
 
+            var loginHistory = new LoginHistory { UserId = user.Id, UserAgent = userAgent, IpAddress = ipAddress, CreatedAt = CommonMethods.GetCurrentTime(), Email = user.Email };
+            await _unitOfWork.Login.SaveLoginHistory(loginHistory);
+
             if (user.Status != AccountStatus.ACTIVE)
                 return Utilities.ValidationErrorResponse(CommonMessage.InactiveUser);
 
@@ -73,10 +76,7 @@ namespace Auth.API.Manager.Implementation
                 UserId = user.Id,
                 IsRevoked = false
             };
-
             await _unitOfWork.Login.SaveUserToken(token);
-            var loginHistory = new LoginHistory { UserId = user.Id, UserAgent = userAgent,IpAddress = ipAddress, CreatedAt= CommonMethods.GetCurrentTime(), Email = user.Email };
-            await _unitOfWork.Login.SaveLoginHistory(loginHistory);
 
             var authResponse = token.Adapt<AuthResponse>();
             return Utilities.SuccessResponse("Login successful", authResponse);
@@ -140,7 +140,7 @@ namespace Auth.API.Manager.Implementation
                 //    return Utilities.ValidationErrorResponse(CommonMessage.ForbiddenResponse);
                 //}
 
-                return Utilities.SuccessResponse("Token varification successfully",new {UserId = user.Id, Email = user.Email, Role = user.Role, UserName = user.UserName});
+                return Utilities.SuccessResponse("Token varification successfully",new {UserId = user.Id, Email = user.Email, Role = user.Role.ToString(), UserName = user.UserName});
             }
             catch (Exception ex)
             {

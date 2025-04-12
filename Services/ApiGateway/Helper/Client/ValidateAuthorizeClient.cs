@@ -36,7 +36,6 @@ namespace ApiGateway.Helper.Client
             }
             else
             {
-                _logger.LogError($"Token validation failed. Status: {response.StatusCode}");
                 return new AuthorizeResponse();
             }
         }
