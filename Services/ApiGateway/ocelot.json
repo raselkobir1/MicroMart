@@ -407,6 +407,10 @@
     {
       "Name": "Notification API",
       "Url": "http://localhost:4005/swagger/v1/swagger.json"
+    },
+    {
+      "Name": "Cart API",
+      "Url": "http://localhost:4006/swagger/v1/swagger.json"
     }
   ]
 }
