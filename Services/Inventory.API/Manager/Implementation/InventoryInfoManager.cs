@@ -107,14 +107,14 @@ namespace Inventory.API.Manager.Implementation
             if (lastHistory == null)
                 return Utilities.NotFoundResponse("Inventory history not found");
 
-            int newQuentity = inventory.Quantity;
+            int currentQuentity = inventory.Quantity;
             if (dto.ActionType == ActionType.IN)
-                newQuentity += dto.Quantity;
-            else
-                newQuentity -= dto.Quantity;
+                currentQuentity += dto.Quantity;
+            else if(dto.ActionType == ActionType.OUT)
+                currentQuentity -= dto.Quantity;
 
             inventory = dto.Adapt(inventory);
-            inventory.Quantity = newQuentity;
+            inventory.Quantity = currentQuentity;
 
             var invHistory = new InventoryHistory
                              {
@@ -122,7 +122,7 @@ namespace Inventory.API.Manager.Implementation
                                 ActionType = dto.ActionType,
                                 QuentityChanged = dto.Quantity,
                                 LastQuentity = lastHistory.NewQuentity,
-                                NewQuentity = newQuentity,
+                                NewQuentity = currentQuentity,
                                 SKU = inventory.SKU,
                              };
 

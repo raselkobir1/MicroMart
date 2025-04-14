@@ -37,7 +37,7 @@
                 await _redisDb.StringSetAsync(GetSessionKey(sessionId), sessionId, TimeSpan.FromSeconds(SessionTtlSeconds));
             }
 
-            // Call inventory service
+            // Get inventory quentity:
             //var client = _httpClientFactory.CreateClient();
             //var invResponse = await client.GetAsync($"https://inventory-service/inventories/{item.InventoryId}");
 
@@ -48,6 +48,7 @@
             //int stock = invJson.RootElement.GetProperty("quantity").GetInt32();
             //if (item.Quantity > stock)
             //    return (false, sessionId, "Not enough inventory");
+
 
             // Add or update cart item
             var cartKey = GetCartKey(sessionId);
@@ -64,8 +65,10 @@
             };
 
             await _redisDb.HashSetAsync(cartKey, item.ProductId, JsonSerializer.Serialize(updatedItem));
-            await _redisDb.KeyExpireAsync(cartKey, TimeSpan.FromSeconds(SessionTtlSeconds));
+            //await _redisDb.KeyExpireAsync(cartKey, TimeSpan.FromSeconds(SessionTtlSeconds));
             await _redisDb.KeyExpireAsync(GetSessionKey(sessionId), TimeSpan.FromSeconds(SessionTtlSeconds));
+
+            // Update inventory quentity:
 
             return Utilities.SuccessResponseForAdd(sessionId);
         }
