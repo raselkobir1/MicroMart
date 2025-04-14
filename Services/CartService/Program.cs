@@ -1,4 +1,5 @@
 using Cart.API.Helper.Extensions;
+using Cart.API.Helper.Job;
 using Cart.API.Helper.ServiceFilter;
 using Cart.API.Manager;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 // Add services to the container.
 builder.Services.AddPersistenceService(builder.Configuration);
 builder.Services.AddScoped<IRedisCartService, RedisCartService>();
+
+builder.Services.AddHostedService<RedisKeyExpirationListener>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

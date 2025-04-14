@@ -385,6 +385,43 @@
           "Port": 4005
         }
       ]
+    },
+    //--------------------------Cart Service------------------------------
+    {
+      "UpstreamPathTemplate": "/Cart/AddToCart",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/Cart/AddToCart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4006
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Cart/GetCart",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/Cart/GetCart",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4006
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Cart/RemoveFromCart/{id}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/Cart/RemoveFromCart//{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4006
+        }
+      ]
     }
   ],
   "SwaggerEndPoints": [
