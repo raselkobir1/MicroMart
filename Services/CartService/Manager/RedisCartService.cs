@@ -30,7 +30,6 @@
                 var exists = await _redisDb.KeyExistsAsync(GetSessionKey(sessionId));
                 if (!exists) sessionId = null;
             }
-
             // If sessionId is still null, create a new one
             if (string.IsNullOrEmpty(sessionId))
             {
@@ -72,7 +71,7 @@
         }
 
 
-        public async Task<Dictionary<string, CartItemDto>> GetCartItemsAsync(string sessionId)
+        public async Task<ResponseModel> GetCartItemsAsync(string sessionId)
         {
             var cartKey = GetCartKey(sessionId);
             var hash = await _redisDb.HashGetAllAsync(cartKey);
@@ -85,35 +84,16 @@
                     result[entry.Name!] = item;
             }
 
-            return result;
+            return Utilities.SuccessResponseForGet(result);
         }
 
-        public async Task<bool> UpdateCartItemAsync(string sessionId, string productId, int quantity)
-        {
-            if (quantity <= 0) return false;
-
-            var cartKey = GetCartKey(sessionId);
-            var value = await _redisDb.HashGetAsync(cartKey, productId);
-            if (value.IsNullOrEmpty) return false;
-
-            var item = JsonSerializer.Deserialize<CartItemDto>(value!);
-            if (item == null) return false;
-
-            item.Quantity = quantity;
-
-            var updated = JsonSerializer.Serialize(item);
-            await _redisDb.HashSetAsync(cartKey, productId, updated);
-            await _redisDb.KeyExpireAsync(cartKey, TimeSpan.FromSeconds(SessionTtlSeconds));
-            await _redisDb.KeyExpireAsync(GetSessionKey(sessionId), TimeSpan.FromSeconds(SessionTtlSeconds));
-
-            return true;
-        }
-
-        public async Task<bool> RemoveCartItemAsync(string sessionId, string productId)
+        public async Task<ResponseModel> RemoveCartItemAsync(string sessionId, string productId)
         {
             var cartKey = GetCartKey(sessionId);
-            return await _redisDb.HashDeleteAsync(cartKey, productId);
+            var result = await _redisDb.HashDeleteAsync(cartKey, productId);
+            if (!result)
+                return Utilities.ValidationErrorResponse("Item not found in cart");
+            return Utilities.SuccessResponseForDelete(); 
         }
     }
-
 }
