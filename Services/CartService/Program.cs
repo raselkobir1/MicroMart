@@ -1,3 +1,4 @@
+using Cart.API.Helper.Client;
 using Cart.API.Helper.Extensions;
 using Cart.API.Helper.Job;
 using Cart.API.Helper.ServiceFilter;
@@ -12,6 +13,11 @@ builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelS
 builder.Services.AddControllers(options => options.Filters.Add<ModelValidatorFilter>())
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddHttpClient<InventoryServiceClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:4002/"); // Replace with actual Inventory Service URL
+});
 
 // Add services to the container.
 builder.Services.AddPersistenceService(builder.Configuration);

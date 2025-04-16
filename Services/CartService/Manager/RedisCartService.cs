@@ -3,6 +3,7 @@
     using Cart.API.Domain.Dto.Common;
     using Cart.API.Domain.Dtos;
     using Cart.API.Helper;
+    using Cart.API.Helper.Client;
     using StackExchange.Redis;
     using System.Text.Json;
 
@@ -10,11 +11,12 @@
     {
         private readonly IDatabase _redisDb;
         private const int SessionTtlSeconds = 60;
-        private readonly IConnectionMultiplexer _connectionMultiplexer;
-        public RedisCartService(IConnectionMultiplexer connectionMultiplexer)
+        private readonly InventoryServiceClient _inventoryClient;
+        public RedisCartService(IConnectionMultiplexer connectionMultiplexer, InventoryServiceClient serviceClient)
         {
-            _connectionMultiplexer = connectionMultiplexer;
-            _redisDb = _connectionMultiplexer.GetDatabase();
+            var _mux = connectionMultiplexer;
+            _redisDb = _mux.GetDatabase();
+            _inventoryClient = serviceClient;
         }
 
         private static string GetCartKey(string sessionId) => $"cart:{sessionId}";
@@ -38,23 +40,20 @@
             }
 
             // Get inventory quentity:
-            //var client = _httpClientFactory.CreateClient();
-            //var invResponse = await client.GetAsync($"https://inventory-service/inventories/{item.InventoryId}");
+            var inventory = await _inventoryClient.GetInventoryById(Convert.ToInt64(item.InventoryId));
 
-            //if (!invResponse.IsSuccessStatusCode)
-            //    return (false, sessionId, "Failed to fetch inventory");
+            if (!inventory.IsSuccess)
+                return Utilities.ValidationErrorResponse("Failed to fetch inventory");
 
-            //var invJson = JsonDocument.Parse(await invResponse.Content.ReadAsStringAsync());
-            //int stock = invJson.RootElement.GetProperty("quantity").GetInt32();
-            //if (item.Quantity > stock)
-            //    return (false, sessionId, "Not enough inventory");
-
+            int stock = inventory.Data.Quantity;
+            if (item.Quantity > stock)
+                return Utilities.ValidationErrorResponse("Not enough inventory");
 
             // Add or update cart item
             var cartKey = GetCartKey(sessionId);
             var existing = await _redisDb.HashGetAsync(cartKey, item.ProductId);
             CartItemDto? existingItem = existing.HasValue ? JsonSerializer.Deserialize<CartItemDto>(existing) : null;
-
+ 
             int totalQty = item.Quantity + (existingItem?.Quantity ?? 0);
 
             var updatedItem = new CartItemDto
@@ -69,6 +68,18 @@
             await _redisDb.KeyExpireAsync(GetSessionKey(sessionId), TimeSpan.FromSeconds(SessionTtlSeconds));
 
             // Update inventory quentity:
+            var invObject = new
+            {
+                Id = inventory.Data.Id,
+                ActionType = 2, // 2 = OUT
+                ProductId = inventory.Data.ProductId,
+                Name = inventory.Data.Name,
+                SKU = inventory.Data.SKU,
+                Description = inventory.Data.Description,
+                Quantity = item.Quantity,
+            };
+
+            var inv =await _inventoryClient.UpdateInventoryAsync(invObject);
 
             return Utilities.SuccessResponseForAdd(sessionId);
         }
