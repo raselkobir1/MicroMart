@@ -14,7 +14,7 @@
             _redis = redis; 
             _logger = logger;
         }
-
+        private static string GetCartKey(string sessionId) => $"cart:{sessionId}";
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var subscriber = _redis.GetSubscriber();
@@ -26,12 +26,21 @@
 
             _logger.LogInformation("Subscribing to Redis key expiration events...");
 
-            await subscriber.SubscribeAsync("__keyevent@0__:expired", (channel, key) =>
+            await subscriber.SubscribeAsync("__keyevent@0__:expired", async (channel, key) =>
             {
                 _logger.LogWarning($"[Redis Expired] Key: {key}");
                 _logger.LogWarning($"[Redis Expired] Channel: {channel}");
 
                 // ➕ Add your custom logic here (e.g., clean up, notifications, etc.)
+
+                 var sessionId = key.ToString().Split(":").Last();
+                var cartKey = GetCartKey(sessionId);
+
+                // Deletes the entire hash key
+                bool deleted = await _redis.GetDatabase().KeyDeleteAsync(cartKey);
+                // api call to update inventory
+                //if (deleted)
+                // api call to update inventory
             });
         }
     }

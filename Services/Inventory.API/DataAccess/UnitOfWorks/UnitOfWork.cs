@@ -45,7 +45,7 @@ namespace Inventory.API.DataAccess.UnitOfWorks
             var userId = _httpContextAccessor?.HttpContext?.Request.Headers["x-user-id"].ToString();
             if (string.IsNullOrWhiteSpace(userId))
                 //throw new UnauthorizedAccessException();
-                userId = 1.ToString(); // for testing purpose only
+                userId = 1.ToString(); // for testing purpose only when anonymous user AddToCard
             return Convert.ToInt64(userId);
         }
         public long GetLoggedInUserRoleId()
