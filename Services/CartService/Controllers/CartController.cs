@@ -33,6 +33,8 @@ namespace Cart.API.Controllers
         public async Task<IActionResult> RemoveFromCart([FromHeader(Name = "x-cart-session-id")] string? sessionId, string productId)
         {
             var response = await _cartService.RemoveCartItemAsync(sessionId, productId);
+            HttpContext.Response.Headers["x-cart-session-id"] = string.Empty;
+            HttpContext.Request.Headers["x-cart-session-id"] = string.Empty;
             return StatusCode(response.StatusCode, response);
         }
     }

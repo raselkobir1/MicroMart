@@ -104,7 +104,10 @@
         public async Task<ResponseModel> RemoveCartItemAsync(string sessionId, string productId)
         {
             var cartKey = GetCartKey(sessionId);
+            var sessionKey = GetSessionKey(sessionId);
+            await _redisDb.KeyDeleteAsync(sessionKey);
             var result = await _redisDb.HashDeleteAsync(cartKey, productId);
+
             if (!result)
                 return Utilities.ValidationErrorResponse("Item not found in cart");
             return Utilities.SuccessResponseForDelete(); 
