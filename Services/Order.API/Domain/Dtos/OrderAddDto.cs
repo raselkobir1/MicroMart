@@ -5,15 +5,15 @@ namespace Order.API.Domain.Dtos
 {
     public class OrderAddDto
     {
-        public long UserId { get; set; }
-        public string UserName { get; set; }
-        public string UserEmail { get; set; }
+        public long? UserId { get; set; }
+        public string? UserName { get; set; }
+        public string? UserEmail { get; set; }
         public string CartSessionId { get; set; }
     }
 
-    public class ProductAddDtoValidator : AbstractValidator<OrderAddDto>
+    public class OrderAddDtoValidator : AbstractValidator<OrderAddDto>
     {
-        public ProductAddDtoValidator()
+        public OrderAddDtoValidator()
         {
             RuleFor(obj => obj.UserId).NotEmpty().GreaterThan(0);
             RuleFor(obj => obj.UserName).NotEmpty().MaximumLength(50);

@@ -18,6 +18,18 @@ namespace Order.API.Controllers
         [HttpPost("checkout")]
         public async Task<IActionResult> OrderCheckout([FromBody] OrderAddDto dto)
         {
+            if(string.IsNullOrEmpty(dto.UserName)){
+                dto.UserName = HttpContext.Request.Headers["x-user-name"];
+            }
+            if (string.IsNullOrEmpty(dto.UserEmail))
+            {
+                dto.UserEmail = HttpContext.Request.Headers["x-user-email"];
+            }
+            if (dto.UserId == null || dto.UserId < 0)
+            {
+                dto.UserId = Convert.ToInt64( HttpContext.Request.Headers["x-user-id"]);
+            }
+
             var response = await _orderManager.OrderCheckout(dto);
             return StatusCode(response.StatusCode, response);
         }

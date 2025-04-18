@@ -15,7 +15,7 @@ namespace Order.API.DataAccess.UnitOfWorks
         long GetLoggedInUserRoleId();
         string GetLoggedInUserName();
         (bool, string) HasDependency(string schemaName, string table, string id);
-        IOrderRepository Products { get; } 
+        IOrderRepository Orders { get; } 
         //IInventoryHistoryRepository InventoryHistory { get; }  
         
     }

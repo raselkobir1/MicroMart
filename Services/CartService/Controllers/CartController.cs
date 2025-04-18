@@ -23,8 +23,8 @@ namespace Cart.API.Controllers
             return StatusCode(response.StatusCode, response); 
         }
 
-        [HttpGet("GetCart")]
-        public async Task<IActionResult> GetCart([FromHeader(Name = "x-cart-session-id")] string? sessionId)
+        [HttpGet("GetCart/{sessionId}")]
+        public async Task<IActionResult> GetCart(string? sessionId)
         {
             var response = await _cartService.GetCartItemsAsync(sessionId);
             return StatusCode(response.StatusCode, response);

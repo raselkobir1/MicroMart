@@ -97,11 +97,11 @@ namespace Order.API.DataAccess.UnitOfWorks
             _readDbContext = readDbContext;
             _httpContextAccessor = httpContextAccessor;
 
-            Products = new OrderRepository(dbContext, readDbContext);
+            Orders = new OrderRepository(dbContext, readDbContext);
             //InventoryHistory = new InventoryHistoryRepository(dbContext, readDbContext);
         }
 
-        public IOrderRepository Products { get; private set; } 
+        public IOrderRepository Orders { get; private set; } 
 
         //public IInventoryHistoryRepository InventoryHistory { get; private set; }
     }
