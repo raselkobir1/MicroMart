@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Auth.API", "Services\Auth.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.API", "Services\Notification.API\Notification.API.csproj", "{5CE2ED00-6C74-42C0-9DEC-025D1A41B07F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cart.API", "Services\CartService\Cart.API.csproj", "{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cart.API", "Services\CartService\Cart.API.csproj", "{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Order.API", "Services\Order.API\Order.API.csproj", "{4FE915C8-4580-470D-8C26-DD3436FFB866}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE915C8-4580-470D-8C26-DD3436FFB866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE915C8-4580-470D-8C26-DD3436FFB866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE915C8-4580-470D-8C26-DD3436FFB866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE915C8-4580-470D-8C26-DD3436FFB866}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{6A8B4AB0-03E3-4F14-ABA1-092D41DA8558} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
 		{5CE2ED00-6C74-42C0-9DEC-025D1A41B07F} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
 		{A79C1CF1-B6FC-4EAB-956A-80F2EE87B4E6} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
+		{4FE915C8-4580-470D-8C26-DD3436FFB866} = {B02D41CB-7788-458E-9475-CCC1BC446FA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB4F8DAE-5D27-4E6D-91A5-53263B567DA3}
