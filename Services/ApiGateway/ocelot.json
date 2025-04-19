@@ -414,12 +414,61 @@
     {
       "UpstreamPathTemplate": "/Cart/RemoveFromCart/{id}",
       "UpstreamHttpMethod": [ "DELETE" ],
-      "DownstreamPathTemplate": "/api/Cart/RemoveFromCart//{id}",
+      "DownstreamPathTemplate": "/api/Cart/RemoveFromCart/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
           "Port": 4006
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Cart/RemoveCart/{sessionId}",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/Cart/RemoveCart/{sessionId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4006
+        }
+      ]
+    },
+    //--------------------------Order Service------------------------------
+    {
+      "UpstreamPathTemplate": "/Order/checkout",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/Order/checkout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4007
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Order/Get/{id}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/Order/Get/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4007
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/Order/GetAll",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamPathTemplate": "/api/Order/GetAll",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 4007
         }
       ]
     }
@@ -448,6 +497,10 @@
     {
       "Name": "Cart API",
       "Url": "http://localhost:4006/swagger/v1/swagger.json"
+    },
+    {
+      "Name": "Order API",
+      "Url": "http://localhost:4007/swagger/v1/swagger.json"
     }
   ]
 }
