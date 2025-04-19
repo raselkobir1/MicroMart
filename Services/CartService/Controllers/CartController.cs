@@ -37,5 +37,14 @@ namespace Cart.API.Controllers
             HttpContext.Request.Headers["x-cart-session-id"] = string.Empty;
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpDelete("RemoveCart/{sessionId}")]
+        public async Task<IActionResult> RemoveFromCart( string? sessionId)
+        {
+            var response = await _cartService.RemoveCartAsync(sessionId);
+            HttpContext.Response.Headers["x-cart-session-id"] = string.Empty;
+            HttpContext.Request.Headers["x-cart-session-id"] = string.Empty;
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

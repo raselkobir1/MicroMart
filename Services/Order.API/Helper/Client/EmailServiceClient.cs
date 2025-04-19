@@ -12,26 +12,29 @@ namespace Order.API.Helper.Client
             _logger = logger;
         }
 
-        public async Task<bool> SendEmailAsync(Domain.Entities.Order product)
+        public async Task<bool> SendEmailAsync(EmailSendDto emailSend)
         {
-            //var inventoryRequest = new
-            //{
-            //    ProductId = product.Id,
-            //    Name = product.Name,
-            //    SKU = product.SKU,
-            //    Description = product.Description,
-            //    Quantity = 0,
-            //};
-            //var response = await _httpClient.PostAsJsonAsync("api/Inventory/Add", inventoryRequest);
+            var response = await _httpClient.PostAsJsonAsync("api/SendEmail/Send", emailSend);
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    return true;
-            //}
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
 
-            _logger.LogError("Failed to create inventory for Product ID {ProductId}", product.Id);
+            _logger.LogError("Failed to send email verification code");
             return false;
         }
     }
-
+    public class EmailSendDto
+    {
+        public EmailSendDto()
+        {
+            To = new List<string>();
+            Cc = new List<string>();
+        }
+        public List<string> To { get; set; }
+        public List<string>? Cc { get; set; }
+        public string Subject { get; set; } = string.Empty;
+        public string Body { get; set; } = string.Empty;
+    }
 }

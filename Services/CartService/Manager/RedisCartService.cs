@@ -10,7 +10,7 @@
     public class RedisCartService : IRedisCartService
     {
         private readonly IDatabase _redisDb;
-        private const int SessionTtlSeconds = 60;
+        private const int SessionTtlSeconds = 600;
         private readonly InventoryServiceClient _inventoryClient;
         public RedisCartService(IConnectionMultiplexer connectionMultiplexer, InventoryServiceClient serviceClient)
         {
@@ -111,6 +111,22 @@
             if (!result)
                 return Utilities.ValidationErrorResponse("Item not found in cart");
             return Utilities.SuccessResponseForDelete(); 
+        }
+
+        public async Task<ResponseModel> RemoveCartAsync(string sessionId)
+        {
+            var sessionKey = GetSessionKey(sessionId);
+            var cartKey = GetCartKey(sessionId);
+            bool isCartRemoved = await _redisDb.KeyDeleteAsync(cartKey);
+            bool isSessionRemoved = await _redisDb.KeyDeleteAsync(sessionKey); 
+            if(isCartRemoved && isSessionRemoved)
+            {
+                return Utilities.SuccessResponseForDelete();
+            }
+            else
+            {
+                return Utilities.ValidationErrorResponse("Not deleted item or cart");
+            }
         }
     }
 }

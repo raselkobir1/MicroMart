@@ -11,13 +11,13 @@ namespace Order.API.Manager.Implementation
     public class OrderManager : IOrderManager
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly EmailServiceClient _inventoryClient;
+        private readonly EmailServiceClient _emailClient;
         private readonly CartServiceClient _cartClient;
         private readonly ProductServiceClient _productClient;
-        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient inventoryClient, CartServiceClient cartClient, ProductServiceClient productClient)
+        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient emailClient, CartServiceClient cartClient, ProductServiceClient productClient)
         {
             _unitOfWork = unitOfWork;
-            _inventoryClient = inventoryClient;
+            _emailClient = emailClient;
             _cartClient = cartClient;
             _productClient = productClient;
         }
@@ -32,13 +32,7 @@ namespace Order.API.Manager.Implementation
                 UserEmail = dto.UserEmail,
                 OrderItems = new List<Domain.Entities.OrderItem>()
             };
-            // checkoutProcess:
-            //1.validate user input
-            //2.get cart items using cart sessionId
-            //3. if cart is empty retutn 400 error.
-            //4.find all product details by the product id from carts.
-            //5.invoke email service.
-            //6.invoke cart service.
+
             #region Validation
             var validationResult = new OrderAddDtoValidator().Validate(dto);
 
@@ -75,6 +69,14 @@ namespace Order.API.Manager.Implementation
              _unitOfWork.Orders.Add(order);
             await _unitOfWork.SaveAsync();
             // send email
+            var sendEmail = new EmailSendDto();
+            sendEmail.To.Add(dto.UserEmail);
+            sendEmail.Body = "Thank you, Successfully completed your order.";
+            sendEmail.Subject = "Order succesfully completed";
+            await _emailClient.SendEmailAsync(sendEmail);
+
+            // clear cart
+            await _cartClient.RemoveCartBySessionId(dto.CartSessionId);
 
             return Utilities.SuccessResponseForAdd(dto);
         }

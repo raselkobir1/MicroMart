@@ -39,6 +39,15 @@ namespace Order.API.Helper.Client
                 return new ApiResponse();
             }
         }
+        public async Task<bool> RemoveCartBySessionId(string sessionId)
+        {
+            var response = await _httpClient.GetAsync($"api/Cart/RemoveCart/{sessionId}");
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
+        }
     }
     public class ApiResponse
     {
