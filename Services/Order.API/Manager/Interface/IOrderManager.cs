@@ -7,7 +7,7 @@ namespace Order.API.Manager.Interface
     {
         Task<ResponseModel> OrderCheckout(OrderAddDto dto);
         //Task<ResponseModel> OrderDelete(long id);
-        //Task<ResponseModel> OrderGetById(long id);
-        //Task<ResponseModel> OrderGetAll(OrderFilterDto dto); 
+        Task<ResponseModel> OrderGetById(long id);
+        Task<ResponseModel> OrderGetAll(OrderFilterDto dto); 
     }
 }

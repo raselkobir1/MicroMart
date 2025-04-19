@@ -8,9 +8,9 @@ namespace Order.API.Domain.Dtos
         public string? UserName { get; set; }
         public string? UserEmail { get; set; } 
     }
-    public class ProductFilterDtoValidator : AbstractValidator<OrderFilterDto>
+    public class OrderFilterDtoValidator : AbstractValidator<OrderFilterDto>
     {
-        public ProductFilterDtoValidator()
+        public OrderFilterDtoValidator()
         {
             Include(new BaseFilterDtoValidator());
         }

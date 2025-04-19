@@ -33,5 +33,17 @@ namespace Order.API.Controllers
             var response = await _orderManager.OrderCheckout(dto);
             return StatusCode(response.StatusCode, response);
         }
+        [HttpGet("Get/{id}")]
+        public async Task<IActionResult> GetOrderById(long id)
+        {
+            var response = await _orderManager.OrderGetById(id);
+            return StatusCode(response.StatusCode, response);
+        }
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> OrderGetAll([FromQuery] OrderFilterDto dto) 
+        {
+            var response = await _orderManager.OrderGetAll(dto);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }

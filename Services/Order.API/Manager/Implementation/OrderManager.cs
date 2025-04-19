@@ -80,5 +80,23 @@ namespace Order.API.Manager.Implementation
 
             return Utilities.SuccessResponseForAdd(dto);
         }
+
+        public async Task<ResponseModel> OrderGetAll(OrderFilterDto dto)
+        {
+            #region Validation
+            var validationResult = new OrderFilterDtoValidator().Validate(dto); 
+            if (!validationResult.IsValid)
+                return Utilities.ValidationErrorResponse(CommonMethods.ConvertFluentErrorMessages(validationResult.Errors));
+            #endregion
+
+            var result = await _unitOfWork.Orders.GetPasignatedResult(dto);
+            return Utilities.SuccessResponseForGet(result);
+        }
+
+        public async Task<ResponseModel> OrderGetById(long id)
+        {
+            var order = await _unitOfWork.Orders.GetWhere(x=> x.Id == id, x=> x.OrderItems);
+            return Utilities.SuccessResponseForAdd(order);
+        }
     }
 }
