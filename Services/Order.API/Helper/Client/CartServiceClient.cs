@@ -41,7 +41,7 @@ namespace Order.API.Helper.Client
         }
         public async Task<bool> RemoveCartBySessionId(string sessionId)
         {
-            var response = await _httpClient.GetAsync($"api/Cart/RemoveCart/{sessionId}");
+            var response = await _httpClient.DeleteAsync($"api/Cart/RemoveCart/{sessionId}");
             if (response.IsSuccessStatusCode)
             {
                 return true;
@@ -53,7 +53,8 @@ namespace Order.API.Helper.Client
     {
         public bool IsSuccess { get; set; }
         public string Message { get; set; } = default!;
-        public List<CartItemDto> Data { get; set; } = default!;
+        //public List<CartItemDto> Data { get; set; } = default!;
+        public Dictionary<string, CartItemDto> Data { get; set; } = new();
     }
     public class CartItemDto
     {

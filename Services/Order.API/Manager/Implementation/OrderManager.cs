@@ -44,7 +44,7 @@ namespace Order.API.Manager.Implementation
             if (!apiResponse.IsSuccess)
                 return Utilities.ValidationErrorResponse("Cart items empty.");
 
-            var cartItems = apiResponse.Data;
+            var cartItems = apiResponse.Data.Values.ToList();
             foreach (var cartItem in cartItems) 
             { 
                 var productResponse = await _productClient.GetProductAsync(cartItem.ProductId);

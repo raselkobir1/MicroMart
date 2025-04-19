@@ -10,7 +10,7 @@
     public class RedisCartService : IRedisCartService
     {
         private readonly IDatabase _redisDb;
-        private const int SessionTtlSeconds = 600;
+        private const int SessionTtlSeconds = 1200;
         private readonly InventoryServiceClient _inventoryClient;
         public RedisCartService(IConnectionMultiplexer connectionMultiplexer, InventoryServiceClient serviceClient)
         {

@@ -25,9 +25,12 @@ builder.Services.AddHttpClient<EmailServiceClient>(client =>
 });
 builder.Services.AddHttpClient<CartServiceClient>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:4006/"); // Replace with actual Inventory Service URL
+    client.BaseAddress = new Uri("http://localhost:4006/"); 
 });
-
+builder.Services.AddHttpClient<ProductServiceClient>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:4001/");
+});
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();

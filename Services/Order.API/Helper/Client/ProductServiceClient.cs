@@ -50,7 +50,7 @@ namespace Order.API.Helper.Client
     {
         public string Name { get; set; }
         public string SKU { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public long? InventoryId { get; set; }
