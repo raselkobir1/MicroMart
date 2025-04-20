@@ -33,9 +33,29 @@ services:
       - microMart
     restart: unless-stopped
 
+  rabbitmq:
+    image: rabbitmq:3.13-management  # Includes the management plugin
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"      # AMQP protocol
+      - "15672:15672"    # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_ERLANG_COOKIE: secret_cookie_for_cluster_nodes
+      RABBITMQ_DEFAULT_VHOST: main_vhost
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro  # Optional advanced config
+    networks:
+      - microMart
+
+
 volumes:
   postgres:
   redis-stack-data:
+  rabbitmq_data:
 
 networks:
   microMart:
