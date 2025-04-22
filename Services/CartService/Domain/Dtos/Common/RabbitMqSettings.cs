@@ -1,4 +1,4 @@
-﻿namespace Notification.API.Domain.Dto.Common
+﻿namespace Cart.API.Domain.Dtos.Common
 {
     public class RabbitMqSettings
     {

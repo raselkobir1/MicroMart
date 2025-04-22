@@ -1,11 +1,11 @@
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using User.API;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Notification.API.Helper.ServiceFilter;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Notification.API.MessageBroker;
+using Notification.API;
 //using User.API.Helper.Client;
 
 var builder = WebApplication.CreateBuilder(args);

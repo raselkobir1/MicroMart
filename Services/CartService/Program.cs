@@ -1,8 +1,10 @@
+using Cart.API.Domain.Dtos.Common;
 using Cart.API.Helper.Client;
 using Cart.API.Helper.Extensions;
 using Cart.API.Helper.Job;
 using Cart.API.Helper.ServiceFilter;
 using Cart.API.Manager;
+using Cart.API.MessageBroker;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 
@@ -13,7 +15,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelS
 builder.Services.AddControllers(options => options.Filters.Add<ModelValidatorFilter>())
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
-
+builder.Services.AddOptions<RabbitMqSettings>().BindConfiguration(nameof(RabbitMqSettings)).ValidateDataAnnotations();
 builder.Services.AddHttpClient<InventoryServiceClient>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:4002/"); // Replace with actual Inventory Service URL
@@ -24,6 +26,7 @@ builder.Services.AddPersistenceService(builder.Configuration);
 builder.Services.AddScoped<IRedisCartService, RedisCartService>();
 
 builder.Services.AddHostedService<RedisKeyExpirationListener>();
+builder.Services.AddHostedService<RabbitMQClearCartConsummer>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

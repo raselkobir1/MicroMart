@@ -6,6 +6,8 @@ using Order.API.Helper.Client;
 using Order.API.Helper;
 using Order.API.Helper.Enums;
 using Order.API.MessageBroker;
+using Microsoft.Extensions.Options;
+using Order.API.Domain.Dtos.Common;
 
 namespace Order.API.Manager.Implementation
 {
@@ -16,13 +18,15 @@ namespace Order.API.Manager.Implementation
         private readonly CartServiceClient _cartClient;
         private readonly ProductServiceClient _productClient;
         private readonly IRabbitMQMessageProducer _rabbitMQProducer;
-        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient emailClient, CartServiceClient cartClient, ProductServiceClient productClient, IRabbitMQMessageProducer rabbitMQProducer)
+        private readonly RabbitMqSettings _rabbitMQettings;
+        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient emailClient, CartServiceClient cartClient, ProductServiceClient productClient, IRabbitMQMessageProducer rabbitMQProducer, IOptions<RabbitMqSettings> settings)
         {
             _unitOfWork = unitOfWork;
             _emailClient = emailClient;
             _cartClient = cartClient;
             _productClient = productClient;
             _rabbitMQProducer = rabbitMQProducer;
+            _rabbitMQettings = settings.Value;
         }
 
         public async Task<ResponseModel> OrderCheckout(OrderAddDto dto)
@@ -74,13 +78,13 @@ namespace Order.API.Manager.Implementation
             // send email
             var sendEmail = new EmailSendDto();
             sendEmail.To.Add(dto.UserEmail);
-            sendEmail.Body = $"Thank you, Successfully completed your order. your orderId is: {order.Id}";
+            sendEmail.Body = $"Hello, {dto.UserName} \nThank you, Successfully completed your order. \nyour orderId is: {order.Id}";
             sendEmail.Subject = "Order succesfully completed";
             //await _emailClient.SendEmailAsync(sendEmail);
-            await _rabbitMQProducer.SendMessageToQueue("send-email", sendEmail);
+            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailQueueName, sendEmail);
             // clear cart
-            await _cartClient.RemoveCartBySessionId(dto.CartSessionId);
-            //await _rabbitMQProducer.SendMessageToQueue("clear-cart", dto.CartSessionId);
+            //await _cartClient.RemoveCartBySessionId(dto.CartSessionId);
+            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.ClearCartQueueName,  dto.CartSessionId );
 
             return Utilities.SuccessResponseForAdd(dto);
         }

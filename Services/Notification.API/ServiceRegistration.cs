@@ -4,7 +4,7 @@ using Notification.API.Domain.Dto.Common;
 using Notification.API.Helper.Configuration;
 using Notification.API.Manager.Interfaces;
 
-namespace User.API
+namespace Notification.API 
 {
     public static class ServiceRegistration
     {

@@ -9,5 +9,6 @@
 
         public string OrderExchangeName { get; set; }
         public string EmailQueueName { get; set; }
+        public string ClearCartQueueName { get; set; } 
     }
 }
