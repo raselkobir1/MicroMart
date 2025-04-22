@@ -26,7 +26,7 @@ services:
     container_name: redis-stack
     ports:
       - "6379:6379"
-      - "8001:8001"
+      - "8001:8001"      # Management UI
     volumes:
       - redis-stack-data:/data 
     networks:
@@ -43,8 +43,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin
-      RABBITMQ_ERLANG_COOKIE: secret_cookie_for_cluster_nodes
-      RABBITMQ_DEFAULT_VHOST: main_vhost
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
       - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro  # Optional advanced config

@@ -5,6 +5,7 @@ using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Notification.API.Helper.ServiceFilter;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
+using Notification.API.MessageBroker;
 //using User.API.Helper.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHostedService<RabbitMQConsummer>();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddFluentValidationRulesToSwagger();

@@ -5,6 +5,7 @@ using Order.API.Manager.Interface;
 using Order.API.Helper.Client;
 using Order.API.Helper;
 using Order.API.Helper.Enums;
+using Order.API.MessageBroker;
 
 namespace Order.API.Manager.Implementation
 {
@@ -14,12 +15,14 @@ namespace Order.API.Manager.Implementation
         private readonly EmailServiceClient _emailClient;
         private readonly CartServiceClient _cartClient;
         private readonly ProductServiceClient _productClient;
-        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient emailClient, CartServiceClient cartClient, ProductServiceClient productClient)
+        private readonly IRabbitMQMessageProducer _rabbitMQProducer;
+        public OrderManager(IUnitOfWork unitOfWork, EmailServiceClient emailClient, CartServiceClient cartClient, ProductServiceClient productClient, IRabbitMQMessageProducer rabbitMQProducer)
         {
             _unitOfWork = unitOfWork;
             _emailClient = emailClient;
             _cartClient = cartClient;
             _productClient = productClient;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         public async Task<ResponseModel> OrderCheckout(OrderAddDto dto)
@@ -71,12 +74,13 @@ namespace Order.API.Manager.Implementation
             // send email
             var sendEmail = new EmailSendDto();
             sendEmail.To.Add(dto.UserEmail);
-            sendEmail.Body = "Thank you, Successfully completed your order.";
+            sendEmail.Body = $"Thank you, Successfully completed your order. your orderId is: {order.Id}";
             sendEmail.Subject = "Order succesfully completed";
-            await _emailClient.SendEmailAsync(sendEmail);
-
+            //await _emailClient.SendEmailAsync(sendEmail);
+            await _rabbitMQProducer.SendMessageToQueue("send-email", sendEmail);
             // clear cart
             await _cartClient.RemoveCartBySessionId(dto.CartSessionId);
+            //await _rabbitMQProducer.SendMessageToQueue("clear-cart", dto.CartSessionId);
 
             return Utilities.SuccessResponseForAdd(dto);
         }
