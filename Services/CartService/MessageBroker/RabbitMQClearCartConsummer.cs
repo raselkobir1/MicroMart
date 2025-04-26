@@ -23,7 +23,7 @@ namespace Cart.API.MessageBroker
             var factory = new ConnectionFactory()
             {
                 HostName = _rabbitMQettings.HostName,
-                Port = _rabbitMQettings.Port,
+                Port     = _rabbitMQettings.Port,
                 UserName = _rabbitMQettings.UserName,
                 Password = _rabbitMQettings.Password,
             };
@@ -32,7 +32,7 @@ namespace Cart.API.MessageBroker
             var channel = await connection.CreateChannelAsync();
 
             var exchange = _rabbitMQettings.OrderExchangeName;
-            var queue = _rabbitMQettings.ClearCartQueueName;
+            var queue    = _rabbitMQettings.ClearCartQueueName;
             await channel.ExchangeDeclareAsync(exchange, ExchangeType.Direct, durable: true);
             await channel.QueueDeclareAsync(queue, durable: true, exclusive: false, autoDelete: false);
             await channel.QueueBindAsync(queue, exchange, queue);
