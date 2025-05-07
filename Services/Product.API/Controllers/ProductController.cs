@@ -44,6 +44,7 @@ namespace Product.API.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> ProductGetAll([FromQuery] ProductFilterDto dto)
         {
+            //var headerValue = HttpContext?.Request.Headers["x-user-role"].ToString();
             var response = await _productManager.ProductGetAll(dto);
             return StatusCode(response.StatusCode, response);
         }

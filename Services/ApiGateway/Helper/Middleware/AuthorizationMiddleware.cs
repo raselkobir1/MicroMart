@@ -25,6 +25,9 @@ namespace ApiGateway.Helper.Middleware
 
             if (_whitelistedPaths.Any(p => requestPath.Equals(p, StringComparison.OrdinalIgnoreCase)))
             {
+                // If the request path == "account/login"
+                // or "account/register" or "account/refresh-token" or "account/forgot-password"
+                // login from keycloak
                 await _next(context);
                 return;
             }

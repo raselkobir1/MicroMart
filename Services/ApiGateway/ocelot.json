@@ -1,6 +1,6 @@
 ﻿{
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:8001"
+    "BaseUrl": "http://localhost:8082"
     //"DownstreamScheme": "http",
     //"HttpHandlerOptions": {
     //  "UseProxy": true,
@@ -45,6 +45,10 @@
           "Port": 4001
         }
       ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
       "FileCacheOptions": {
         "TtlSeconds": 10
       },
