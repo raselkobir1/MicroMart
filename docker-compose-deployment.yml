@@ -1,0 +1,54 @@
+#version: '3.8'  # ✅ Version must be on top
+
+#E:\MicroMart\Services\ApiGateway
+services:
+   # API Gateway
+  api-gateway:
+    container_name: apigateway
+    build:
+      context: .
+      dockerfile: Services/ApiGateway/Dockerfile
+    ports:
+      - "8082:8080"
+    #depends_on:
+      #- auth-api
+      #- cart-api
+      #- inventory-api
+      #- notification-api
+      #- order-api
+      #- product-api
+      #- user-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      #- AuthApiUrl=http://auth-api:4003
+      #- CartApiUrl=http://cart-api:4001
+      #- InventoryApiUrl=http://inventory-api
+      #- NotificationApiUrl=http://notification-api
+      #- OrderApiUrl=http://order-api
+      #- ProductApiUrl=http://product-api
+      #- UserApiUrl=http://user-api
+    
+     # Auth Service
+  auth-api:
+    container_name: auth-api
+    build:
+      context: .
+      dockerfile: Services/Auth.API/Dockerfile
+    ports:
+      - "4003:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Override ONLY what needs to change in containers
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AuthDB;User Id=postgres;Password=postgres
+      - ConnectionStrings__RedisConnection=redis://redis-stack:6379
+      # JWT configs remain in appsettings.json (unless you need to override)
+
+    networks:
+        - microMart 
+    
+networks:
+  microMart:
+    external: true  # Declare existing network here # Must declare this  network as external if it exists
+
+  # Cart Service
+

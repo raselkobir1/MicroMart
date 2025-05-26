@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.Json;
 using ApiGateway.Dto;
+using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace ApiGateway.Manager
 {
@@ -19,7 +22,7 @@ namespace ApiGateway.Manager
             _options = options.Value;
         }
 
-        public async Task<AuthorizeResponse?> GetToken(TokenRequestDto dto)
+        public async Task<AuthorizeResponse> GetToken(TokenRequestDto dto)
         {
             if (!_options.Realms.TryGetValue(dto.Realm, out var realmConfig))
             {
@@ -55,6 +58,33 @@ namespace ApiGateway.Manager
             }
             return authorizeResponse;
         }
-    }
 
+        public async Task<AuthorizeResponse> ValidateToken(ValidateTokenRequestDto dto)
+        {
+            if (!_options.Realms.TryGetValue(dto.Realm, out var realmConfig))
+            {
+                throw new ArgumentException($"Realm '{dto.Realm}' is not configured.");
+            }
+            var introspectUrl = $"{_options.ServerUrl}/realms/{realmConfig.Realm}/protocol/openid-connect/token/introspect";
+
+            var request = new HttpRequestMessage(HttpMethod.Post, introspectUrl);
+
+            var basicAuth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{realmConfig.ClientId}:{realmConfig.ClientSecret}"));
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", basicAuth);
+
+            request.Content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("token", dto.Token)
+            });
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            var response = await _httpClient.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+                throw new ArgumentException($"Invalid token.");
+
+            var json = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+            return new AuthorizeResponse();
+        }
+    }
 }

@@ -2,6 +2,8 @@ using ApiGateway.Dto;
 using ApiGateway.Helper.Client;
 using ApiGateway.Helper.Middleware;
 using ApiGateway.Manager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -29,12 +31,27 @@ builder.Services.AddAuthentication("Bearer")
         //options.Audience = "ocelot-client"; // Keycloak Client ID
         options.Audience = "account";         // Keycloak Client ID
     });
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.Authority = builder.Configuration["Keycloak:Authority"];
+//        options.Audience = builder.Configuration["Keycloak:Audience"];
+//        options.RequireHttpsMetadata = false; // For development only
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateAudience = true,
+//            ValidateIssuer = true,
+//            ValidIssuer = builder.Configuration["Keycloak:Issuer"],
+//            ValidateLifetime = true
+//        };
+//    });
+
 
 builder.Services.AddAuthorization();
-//builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-//builder.Services.AddOcelot(builder.Configuration)
-//    .AddDelegatingHandler<AddUserHeadersDelegatingHandler>(true)
-//    .AddCacheManager(x => { x.WithDictionaryHandle(); });
+builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+builder.Services.AddOcelot(builder.Configuration)
+    .AddDelegatingHandler<AddUserHeadersDelegatingHandler>(true)
+    .AddCacheManager(x => { x.WithDictionaryHandle(); });
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<AddUserHeadersDelegatingHandler>();
@@ -56,8 +73,14 @@ app.MapHealthChecks("/health");
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
 //app.UseMiddleware<AuthorizationMiddleware>();
-app.MapControllers();
-//await app.UseOcelot();
+app.UseMiddleware<RealmWiseTokenValidationMiddleware>();
+await app.UseOcelot();
 app.Run();
 

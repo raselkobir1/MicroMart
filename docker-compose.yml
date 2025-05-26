@@ -16,7 +16,7 @@ services:
     networks:
       - microMart
     healthcheck:
-      test: ['CMD', 'pg_isready', '-U', 'auth']
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
       interval: 30s
       timeout: 30s
       retries: 3
@@ -51,6 +51,7 @@ services:
 
   keycloak:
     image: bitnami/keycloak:latest
+    container_name: keycloak
     environment:
       KEYCLOAK_DATABASE_HOST: postgres
       KEYCLOAK_DATABASE_PORT: 5432
@@ -75,4 +76,5 @@ volumes:
 
 networks:
   microMart:
+    name: microMart
     driver: bridge

@@ -20,9 +20,14 @@ namespace ApiGateway.Controllers
         [HttpPost("token")]
         public async Task<IActionResult> GetToken([FromBody] TokenRequestDto dto) 
         {
-            // Redirect to Keycloak login page
-            //var redirectUrl = "https://your-keycloak-server/auth/realms/your-realm/protocol/openid-connect/auth";
             var response = await _keycloakAuth.GetToken(dto);
+            return StatusCode(200, response);
+        }
+
+        [HttpPost("introspect")]
+        public async Task<IActionResult> ValidateToken([FromBody] ValidateTokenRequestDto dto) 
+        {
+            var response = await _keycloakAuth.ValidateToken(dto);
             return StatusCode(200, response);
         }
     }
