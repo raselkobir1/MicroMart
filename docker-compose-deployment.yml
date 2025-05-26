@@ -10,14 +10,6 @@ services:
       dockerfile: Services/ApiGateway/Dockerfile
     ports:
       - "8082:8080"
-    #depends_on:
-      #- auth-api
-      #- cart-api
-      #- inventory-api
-      #- notification-api
-      #- order-api
-      #- product-api
-      #- user-api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       #- AuthApiUrl=http://auth-api:4003
@@ -42,10 +34,42 @@ services:
       - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AuthDB;User Id=postgres;Password=postgres
       - ConnectionStrings__RedisConnection=redis://redis-stack:6379
       # JWT configs remain in appsettings.json (unless you need to override)
-
     networks:
         - microMart 
-    
+
+  user-api:
+    container_name: user-api
+    build:
+      context: .
+      dockerfile: Services/User.API/Dockerfile
+    ports:
+      - "4004:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Override ONLY what needs to change in containers
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=User_db;User Id=postgres;Password=postgres
+      - ConnectionStrings__RedisConnection=redis://redis-stack:6379,abortConnect=false
+      # JWT configs remain in appsettings.json (unless you need to override)
+    networks:
+        - microMart   
+
+  notification-api:
+    container_name: notification-api
+    build:
+      context: .
+      dockerfile: Services/Notification.API/Dockerfile
+    ports:
+      - "4005:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Override ONLY what needs to change in containers
+      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=User_db;User Id=postgres;Password=postgres
+      - ConnectionStrings__RedisConnection=redis://redis-stack:6379,abortConnect=false
+      # JWT configs remain in appsettings.json (unless you need to override)
+    networks:
+        - microMart  
+
+
 networks:
   microMart:
     external: true  # Declare existing network here # Must declare this  network as external if it exists

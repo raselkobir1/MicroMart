@@ -55,7 +55,7 @@ services:
     environment:
       KEYCLOAK_DATABASE_HOST: postgres
       KEYCLOAK_DATABASE_PORT: 5432
-      KEYCLOAK_DATABASE_NAME: keycloak_db
+      KEYCLOAK_DATABASE_NAME: postgres
       KEYCLOAK_DATABASE_USER: postgres
       KEYCLOAK_DATABASE_PASSWORD: postgres
       KEYCLOAK_ADMIN_USER: admin
