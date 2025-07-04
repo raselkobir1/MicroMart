@@ -1,6 +1,4 @@
 #version: '3.8'  # ✅ Version must be on top
-
-#E:\MicroMart\Services\ApiGateway
 services:
    # API Gateway
   api-gateway:
@@ -9,17 +7,12 @@ services:
       context: .
       dockerfile: Services/ApiGateway/Dockerfile
     ports:
-      - "8082:8080"
+      - "5500:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      #- AuthApiUrl=http://auth-api:4003
-      #- CartApiUrl=http://cart-api:4001
-      #- InventoryApiUrl=http://inventory-api
-      #- NotificationApiUrl=http://notification-api
-      #- OrderApiUrl=http://order-api
-      #- ProductApiUrl=http://product-api
-      #- UserApiUrl=http://user-api
-    
+      #- AuthApiUrl=http://auth-api:6100
+    networks:
+      - microMart
      # Auth Service
   auth-api:
     container_name: auth-api
@@ -27,13 +20,9 @@ services:
       context: .
       dockerfile: Services/Auth.API/Dockerfile
     ports:
-      - "4003:8080"
+      - "6100:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Override ONLY what needs to change in containers
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=AuthDB;User Id=postgres;Password=postgres
-      - ConnectionStrings__RedisConnection=redis://redis-stack:6379
-      # JWT configs remain in appsettings.json (unless you need to override)
     networks:
         - microMart 
 
@@ -43,13 +32,9 @@ services:
       context: .
       dockerfile: Services/User.API/Dockerfile
     ports:
-      - "4004:8080"
+      - "6600:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Override ONLY what needs to change in containers
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=User_db;User Id=postgres;Password=postgres
-      - ConnectionStrings__RedisConnection=redis://redis-stack:6379,abortConnect=false
-      # JWT configs remain in appsettings.json (unless you need to override)
     networks:
         - microMart   
 
@@ -59,13 +44,9 @@ services:
       context: .
       dockerfile: Services/Notification.API/Dockerfile
     ports:
-      - "4005:8080"
+      - "5101:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      # Override ONLY what needs to change in containers
-      - ConnectionStrings__DefaultConnection=Server=postgres;Port=5432;Database=User_db;User Id=postgres;Password=postgres
-      - ConnectionStrings__RedisConnection=redis://redis-stack:6379,abortConnect=false
-      # JWT configs remain in appsettings.json (unless you need to override)
     networks:
         - microMart  
 

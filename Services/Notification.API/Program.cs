@@ -36,6 +36,8 @@ builder.Services.AddInfrastructure();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHealthChecks();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,9 +45,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
 app.MapHealthChecks("/health");
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

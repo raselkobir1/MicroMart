@@ -18,7 +18,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4001
+          "Port": 6500
         }
       ]
     },
@@ -30,7 +30,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4001
+          "Port": 6500
         }
       ]
     },
@@ -42,7 +42,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4001
+          "Port": 6500
         }
       ],
       "AuthenticationOptions": {
@@ -67,7 +67,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4001
+          "Port": 6500
         }
       ]
     },
@@ -79,7 +79,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4001
+          "Port": 6500
         }
       ]
     },
@@ -92,7 +92,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4002
+          "Port": 6300
         }
       ]
     },
@@ -104,7 +104,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4002
+          "Port": 6300
         }
       ]
     },
@@ -116,7 +116,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4002
+          "Port": 6300
         }
       ]
     },
@@ -128,7 +128,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4002
+          "Port": 6300
         }
       ]
     },
@@ -140,7 +140,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4002
+          "Port": 6300
         }
       ],
       "FileCacheOptions": {
@@ -162,7 +162,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -174,7 +174,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -186,7 +186,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -198,7 +198,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -210,7 +210,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ],
       "FileCacheOptions": {
@@ -231,7 +231,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -243,7 +243,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -255,7 +255,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -267,7 +267,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -279,7 +279,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -291,7 +291,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4003
+          "Port": 6100
         }
       ]
     },
@@ -304,7 +304,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4004
+          "Port": 6600
         }
       ]
     },
@@ -316,7 +316,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4004
+          "Port": 6600
         }
       ]
     },
@@ -328,7 +328,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4004
+          "Port": 6600
         }
       ]
     },
@@ -340,7 +340,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4004
+          "Port": 6600
         }
       ]
     },
@@ -352,7 +352,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4004
+          "Port": 6600
         }
       ],
       "FileCacheOptions": {
@@ -374,7 +374,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4005
+          "Port": 5101
         }
       ]
     },
@@ -386,7 +386,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4005
+          "Port": 5101
         }
       ]
     },
@@ -399,7 +399,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4006
+          "Port": 6200
         }
       ]
     },
@@ -411,7 +411,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4006
+          "Port": 6200
         }
       ]
     },
@@ -423,7 +423,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4006
+          "Port": 6200
         }
       ]
     },
@@ -435,7 +435,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4006
+          "Port": 6200
         }
       ]
     },
@@ -448,7 +448,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4007
+          "Port": 6400
         }
       ]
     },
@@ -460,7 +460,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4007
+          "Port": 6400
         }
       ]
     },
@@ -472,7 +472,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 4007
+          "Port": 6400
         }
       ]
     }
@@ -480,31 +480,31 @@
   "SwaggerEndPoints": [
     {
       "Name": "Product API",
-      "Url": "http://localhost:4001/swagger/v1/swagger.json"
+      "Url": "http://localhost:6500/swagger/v1/swagger.json"
     },
     {
       "Name": "Inventory API",
-      "Url": "http://localhost:4002/swagger/v1/swagger.json"
+      "Url": "http://localhost:6300/swagger/v1/swagger.json"
     },
     {
       "Name": "AuthUser API",
-      "Url": "http://localhost:4003/swagger/v1/swagger.json"
+      "Url": "http://localhost:6100/swagger/v1/swagger.json"
     },
     {
       "Name": "User API",
-      "Url": "http://localhost:4004/swagger/v1/swagger.json"
+      "Url": "http://localhost:6600/swagger/v1/swagger.json"
     },
     {
       "Name": "Notification API",
-      "Url": "http://localhost:4005/swagger/v1/swagger.json"
+      "Url": "http://localhost:5101/swagger/v1/swagger.json"
     },
     {
       "Name": "Cart API",
-      "Url": "http://localhost:4006/swagger/v1/swagger.json"
+      "Url": "http://localhost:6200/swagger/v1/swagger.json"
     },
     {
       "Name": "Order API",
-      "Url": "http://localhost:4007/swagger/v1/swagger.json"
+      "Url": "http://localhost:6400/swagger/v1/swagger.json"
     }
   ]
 }

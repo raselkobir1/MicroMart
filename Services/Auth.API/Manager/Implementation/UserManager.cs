@@ -160,13 +160,13 @@ namespace Auth.API.Manager.Implementation
                 await _unitOfWork.SaveAsync();
 
                 // create user profile
-                var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
-                if (!isSuccess)
-                {
-                    //await _unitOfWork.Users.RemoveUser(user);
-                    _unitOfWork.RollBackTransaction();
-                    return Utilities.ValidationErrorResponse("Failed to create user profile");
-                }
+               // var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
+                //if (!isSuccess)
+                //{
+                //    //await _unitOfWork.Users.RemoveUser(user);
+                //    _unitOfWork.RollBackTransaction();
+                //    return Utilities.ValidationErrorResponse("Failed to create user profile");
+                //}
                 // Generate verification code and save in table: verificationCode
                 string verificationCode = CommonMethods.GenerateUniqueRandomNumber().ToString();
                 _unitOfWork.VerificationCode.Add(new VerificationCode
@@ -181,14 +181,14 @@ namespace Auth.API.Manager.Implementation
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
                 // Send email to user for verification
-                var emailSendDto = new EmailSendDto
-                {
-                    To = new List<string> { user.Email },
-                    Subject = "User registration verification Code",
-                    Body = $"Your verification code is: {verificationCode}",
-                };
+                //var emailSendDto = new EmailSendDto
+                //{
+                //    To = new List<string> { user.Email },
+                //    Subject = "User registration verification Code",
+                //    Body = $"Your verification code is: {verificationCode}",
+                //};
 
-                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                //var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
 
                 var finalResponse = user.Adapt<UserAddDto>();
                 return Utilities.SuccessResponseForAdd(finalResponse);

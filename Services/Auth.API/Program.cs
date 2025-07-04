@@ -31,11 +31,13 @@ builder.Services.AddPersistenceService(builder.Configuration);
 
 builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:4004/");
+    client.BaseAddress = new Uri("http://localhost:6600/");
+    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:userApiUrl"]);
 });
 builder.Services.AddHttpClient<SendVerificationEmailClient>(client =>
 {
-    client.BaseAddress = new Uri("http://localhost:4005/");
+    client.BaseAddress = new Uri("http://localhost:5101/");
+    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:notificationApiUrl"]);
 });
 
 

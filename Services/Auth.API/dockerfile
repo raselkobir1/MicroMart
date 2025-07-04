@@ -37,3 +37,4 @@ EXPOSE 8080
 # 5. Copy from correct publish location
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "Auth.API.dll"]
+

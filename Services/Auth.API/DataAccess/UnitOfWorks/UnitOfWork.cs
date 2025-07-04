@@ -42,7 +42,8 @@ namespace Auth.API.DataAccess.UnitOfWorks
 
         public long GetLoggedInUserId()
         {
-            var userId = _httpContextAccessor?.HttpContext?.Request.Headers["x-user-id"].ToString();
+            //var userId = _httpContextAccessor?.HttpContext?.Request.Headers["x-user-id"].ToString();
+            var userId = "1";
             if (string.IsNullOrWhiteSpace(userId))
                 throw new UnauthorizedAccessException();
             return Convert.ToInt64(userId);
