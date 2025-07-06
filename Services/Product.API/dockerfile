@@ -1,0 +1,39 @@
+# Build Stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine AS build
+ARG BUILD_CONFIGURATION=Release
+ARG RUNTIME=linux-musl-x64
+WORKDIR /src
+
+# 1. COPY with explicit relative path
+COPY ["Services/Product.API/Product.API.csproj", "Services/Product.API/"]
+RUN dotnet restore "Services/Product.API/Product.API.csproj" -r $RUNTIME
+
+# 2. Copy remaining files with correct context
+COPY . .
+
+# 3. Set working directory before publish
+WORKDIR "/src/Services/Product.API"
+RUN dotnet publish "Product.API.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -r $RUNTIME \
+    --self-contained false \
+    -o /app/publish \
+    /p:UseAppHost=false \
+    /p:PublishReadyToRun=true
+
+# Final Stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+
+# 4. Required globalization packages
+RUN apk add --no-cache icu-libs tzdata
+ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false \
+    TZ=UTC \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8
+
+WORKDIR /app
+EXPOSE 8080
+
+# 5. Copy from correct publish location
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Product.API.dll"]
