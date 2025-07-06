@@ -50,6 +50,53 @@ services:
     networks:
         - microMart  
 
+  cart-api:
+    container_name: Cart-api
+    build:
+      context: .
+      dockerfile: Services/Cart.API/Dockerfile
+    ports:
+      - "6200:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+        - microMart 
+
+  inventory-api:
+    container_name: inventory-api
+    build:
+      context: .
+      dockerfile: Services/Inventory.API/Dockerfile
+    ports:
+      - "6300:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+        - microMart 
+  
+  order-api:
+    container_name: order-api
+    build:
+      context: .
+      dockerfile: Services/Order.API/Dockerfile
+    ports:
+      - "6400:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+        - microMart 
+
+  product-api:
+    container_name: product-api
+    build:
+      context: .
+      dockerfile: Services/Product.API/Dockerfile
+    ports:
+      - "6500:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+        - microMart 
 
 networks:
   microMart:

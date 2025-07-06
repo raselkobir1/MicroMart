@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using Notification.API.MessageBroker;
 using Notification.API;
-//using User.API.Helper.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,16 +13,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelS
 builder.Services.AddControllers(options => options.Filters.Add<ModelValidatorFilter>())
                 .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
-
-// Add services to the container.
-//builder.Services.AddPersistenceService(builder.Configuration);
-
-
-//builder.Services.AddHttpClient<InventoryServiceClient>(client =>
-//{
-//    client.BaseAddress = new Uri("http://localhost:4002/"); // Replace with actual Inventory Service URL
-//});
-
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
