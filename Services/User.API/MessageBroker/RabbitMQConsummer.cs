@@ -1,12 +1,14 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Notification.API.Domain.Dto.Common;
-using Notification.API.Manager.Interfaces;
+using User.API.Domain.Dto.Common;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
+using User.API.Domain.Dtos.Common;
+using User.API.Domain.Dtos;
+using User.API.Manager.Interface;
 
-namespace Notification.API.MessageBroker
+namespace User.API.MessageBroker
 {
     public class RabbitMQConsummer : BackgroundService
     {
@@ -31,11 +33,10 @@ namespace Notification.API.MessageBroker
             var connection = await factory.CreateConnectionAsync();
             var channel = await connection.CreateChannelAsync();
 
-            var exchange = _rabbitMQettings.OrderExchangeName;
             var queue    = _rabbitMQettings.EmailQueueName;
-            await channel.ExchangeDeclareAsync(exchange, ExchangeType.Direct, durable: true);
+            await channel.ExchangeDeclareAsync(_rabbitMQettings.UserProfileExchangeName, ExchangeType.Direct, durable: true);
             await channel.QueueDeclareAsync(queue, durable: true, exclusive: false, autoDelete: false);
-            await channel.QueueBindAsync(queue, exchange, queue);
+            await channel.QueueBindAsync(queue, _rabbitMQettings.UserProfileExchangeName, queue);
 
             var consumer = new AsyncEventingBasicConsumer(channel);
 
@@ -45,14 +46,13 @@ namespace Notification.API.MessageBroker
 
                 try
                 {
-                    var emailEvent = JsonConvert.DeserializeObject<EmailDto>(message);
-                    if(emailEvent != null)
+                    var userEvent = JsonConvert.DeserializeObject<UserAddDto>(message);
+                    if(userEvent != null)
                     {
                         using var scope = _serviceProvider.CreateScope();
-                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        var userService = scope.ServiceProvider.GetRequiredService<IUserManager>();
 
-                        await emailService.SendEmailAsync(emailEvent);
-
+                        await userService.UserAdd(userEvent);
                         // Manually acknowledge only after successful processing
                         await channel.BasicAckAsync(eventArgs.DeliveryTag, multiple: false);
                     }

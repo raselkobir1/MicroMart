@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Order.API.Domain.Dtos.Common;
+using Auth.API.Domain.Dtos.Common;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Order.API.MessageBroker
+namespace Auth.API.MessageBroker
 {
     public class RabbitMQMessageProducer : IRabbitMQMessageProducer
     {
@@ -13,7 +13,7 @@ namespace Order.API.MessageBroker
         {
             _rabbitMQettings = settings.Value;
         }
-        public async Task SendMessageToQueue<T>(string exchange, string queue, T message)
+        public async Task SendMessageToQueue<T>(string queue,string exchange, T message)
         {
             var factory = new ConnectionFactory()
             {
@@ -22,6 +22,8 @@ namespace Order.API.MessageBroker
                 UserName = _rabbitMQettings.UserName,
                 Password = _rabbitMQettings.Password
             };
+
+            //var exchange = _rabbitMQettings.AuthExchangeName;
 
             using var connection = await factory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();

@@ -1,7 +1,9 @@
 ﻿using Auth.API.DataAccess.UnitOfWorks;
+using Auth.API.Domain.Dtos.Common;
 using Auth.API.Helper.Configuration;
 using Auth.API.Manager.Implementation;
 using Auth.API.Manager.Interface;
+using Auth.API.MessageBroker;
 
 namespace Auth.API
 {
@@ -12,6 +14,8 @@ namespace Auth.API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ILoginManager, LoginManager>();
+            services.AddOptions<RabbitMqSettings>().BindConfiguration(nameof(RabbitMqSettings)).ValidateDataAnnotations();
+            services.AddScoped<IRabbitMQMessageProducer, RabbitMQMessageProducer>();
 
             #region Options Config
             services.AddOptions<JwtTokenConfiguration>().BindConfiguration(nameof(JwtTokenConfiguration)).ValidateDataAnnotations();

@@ -2,6 +2,6 @@
 {
     public interface IRabbitMQMessageProducer
     {
-        Task SendMessageToQueue<T>(string queue, T message);
+        Task SendMessageToQueue<T>(string exchange,string queue, T message);
     }
 }

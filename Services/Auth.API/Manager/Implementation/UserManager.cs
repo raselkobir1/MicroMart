@@ -10,19 +10,31 @@ using BCrypt.Net;
 using Auth.API.Domain.Entities;
 using Auth.API.Helper.Enums;
 using Auth.API.Domain.Dtos.Common;
+using Microsoft.Extensions.Options;
+using Auth.API.MessageBroker;
 
 namespace Auth.API.Manager.Implementation
 {
     public class UserManager : IUserManager
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly UserProfileServiceClient _userProfileClient;
-        private readonly SendVerificationEmailClient _sendEmailClient;
-        public UserManager(IUnitOfWork unitOfWork, UserProfileServiceClient userProfileClient, SendVerificationEmailClient sendEmailClient)
+        private readonly IRabbitMQMessageProducer _rabbitMQProducer;
+        private readonly RabbitMqSettings _rabbitMQettings;
+        //private readonly UserProfileServiceClient _userProfileClient;
+        //private readonly SendVerificationEmailClient _sendEmailClient;
+        //public UserManager(IUnitOfWork unitOfWork, UserProfileServiceClient userProfileClient, SendVerificationEmailClient sendEmailClient)
+        //{
+        //    _unitOfWork = unitOfWork;
+        //    _userProfileClient = userProfileClient;
+        //    _sendEmailClient = sendEmailClient;
+        //}
+
+
+        public UserManager(IUnitOfWork unitOfWork, IRabbitMQMessageProducer rabbitMQProducer, IOptions<RabbitMqSettings> settings)
         {
             _unitOfWork = unitOfWork;
-            _userProfileClient = userProfileClient;
-            _sendEmailClient = sendEmailClient;
+            _rabbitMQProducer = rabbitMQProducer;
+            _rabbitMQettings = settings.Value;
         }
 
         public async Task<ResponseModel> AuthUserVerification(UserVerificationDto dto)
@@ -68,7 +80,9 @@ namespace Auth.API.Manager.Implementation
                     Subject = "Verification success",
                     Body = $"Thank you. you are successfully verified.",
                 };
-                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                //var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailQueueName, _rabbitMQettings.EmailExchangeName, user);
+
 
                 return Utilities.SuccessResponseForUpdate(new { IsVerified = true });
             }
@@ -117,10 +131,8 @@ namespace Auth.API.Manager.Implementation
                     Body = $"Your verification code is: {verificationCode.Code}",
                 };
 
-                var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
-                if (!isSendEmail)
-                    return Utilities.SuccessResponse("Verification code send successfully", new { IsResendCode = false }); 
-
+                //var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailQueueName, _rabbitMQettings.EmailExchangeName, user);
                 return Utilities.SuccessResponse("Verification code send faild", new { IsResendCode = true });
             }
             catch (Exception)
@@ -160,7 +172,7 @@ namespace Auth.API.Manager.Implementation
                 await _unitOfWork.SaveAsync();
 
                 // create user profile
-               // var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
+                // var isSuccess = await _userProfileClient.CreateUserProfileAsync(user);
                 //if (!isSuccess)
                 //{
                 //    //await _unitOfWork.Users.RemoveUser(user);
@@ -168,6 +180,9 @@ namespace Auth.API.Manager.Implementation
                 //    return Utilities.ValidationErrorResponse("Failed to create user profile");
                 //}
                 // Generate verification code and save in table: verificationCode
+
+                var userProfileRequest = new { AuthUserId = user.Id, Name = user.UserName, Email = user.Email, Status = 1 };
+                await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.UserProfileQueueName, _rabbitMQettings.UserProfileExchangeName, userProfileRequest);
                 string verificationCode = CommonMethods.GenerateUniqueRandomNumber().ToString();
                 _unitOfWork.VerificationCode.Add(new VerificationCode
                 {
@@ -181,14 +196,15 @@ namespace Auth.API.Manager.Implementation
                 await _unitOfWork.SaveAsync();
                 _unitOfWork.CommitTransaction();
                 // Send email to user for verification
-                //var emailSendDto = new EmailSendDto
-                //{
-                //    To = new List<string> { user.Email },
-                //    Subject = "User registration verification Code",
-                //    Body = $"Your verification code is: {verificationCode}",
-                //};
+                var emailSendDto = new EmailSendDto
+                {
+                    To = new List<string> { user.Email },
+                    Subject = "User registration verification Code",
+                    Body = $"Your verification code is: {verificationCode}",
+                };
 
                 //var isSendEmail = await _sendEmailClient.SendVerificationCodeAsync(emailSendDto);
+                await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailQueueName, _rabbitMQettings.EmailExchangeName, emailSendDto);
 
                 var finalResponse = user.Adapt<UserAddDto>();
                 return Utilities.SuccessResponseForAdd(finalResponse);

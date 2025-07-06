@@ -29,16 +29,16 @@ builder.Services.AddPersistenceService(builder.Configuration);
 //    //options.ForwardedHeadersRemoval = Microsoft.AspNetCore.HttpOverrides.ForwardedHeadersRemoval.None;
 //});
 
-builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
-{
-    client.BaseAddress = new Uri("http://localhost:6600/");
-    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:userApiUrl"]);
-});
-builder.Services.AddHttpClient<SendVerificationEmailClient>(client =>
-{
-    client.BaseAddress = new Uri("http://localhost:5101/");
-    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:notificationApiUrl"]);
-});
+//builder.Services.AddHttpClient<UserProfileServiceClient>(client =>
+//{
+//    client.BaseAddress = new Uri("http://localhost:6600/");
+//    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:userApiUrl"]);
+//});
+//builder.Services.AddHttpClient<SendVerificationEmailClient>(client =>
+//{
+//    client.BaseAddress = new Uri("http://localhost:5101/");
+//    //client.BaseAddress = new Uri(builder.Configuration["apiBaseUrl:notificationApiUrl"]);
+//});
 
 
 builder.Services.AddControllers();

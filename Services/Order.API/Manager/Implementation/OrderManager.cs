@@ -81,10 +81,10 @@ namespace Order.API.Manager.Implementation
             sendEmail.Body = $"Hello, {dto.UserName} \nThank you, Successfully completed your order. \nyour orderId is: {order.Id}";
             sendEmail.Subject = "Order succesfully completed";
             //await _emailClient.SendEmailAsync(sendEmail);
-            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailQueueName, sendEmail);
+            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.EmailExchangeName,_rabbitMQettings.EmailQueueName, sendEmail);
             // clear cart
             //await _cartClient.RemoveCartBySessionId(dto.CartSessionId);
-            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.ClearCartQueueName,  dto.CartSessionId );
+            await _rabbitMQProducer.SendMessageToQueue(_rabbitMQettings.OrderExchangeName,_rabbitMQettings.ClearCartQueueName,  dto.CartSessionId );
 
             return Utilities.SuccessResponseForAdd(dto);
         }
