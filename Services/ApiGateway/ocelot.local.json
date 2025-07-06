@@ -1,6 +1,6 @@
 ﻿{
   "GlobalConfiguration": {
-    "BaseUrl": "http://apigateway:8082"
+    "BaseUrl": "http://localhost:8082"
     //"DownstreamScheme": "http",
     //"HttpHandlerOptions": {
     //  "UseProxy": true,
@@ -17,7 +17,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-api",
+          "Host": "localhost",
           "Port": 6500
         }
       ]
@@ -29,7 +29,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-api",
+          "Host": "localhost",
           "Port": 6500
         }
       ]
@@ -41,7 +41,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-api",
+          "Host": "localhost",
           "Port": 6500
         }
       ],
@@ -66,7 +66,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-api",
+          "Host": "localhost",
           "Port": 6500
         }
       ]
@@ -78,7 +78,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "product-api",
+          "Host": "localhost",
           "Port": 6500
         }
       ]
@@ -91,7 +91,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-api",
+          "Host": "localhost",
           "Port": 6300
         }
       ]
@@ -103,7 +103,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-api",
+          "Host": "localhost",
           "Port": 6300
         }
       ]
@@ -115,7 +115,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-api",
+          "Host": "localhost",
           "Port": 6300
         }
       ]
@@ -127,7 +127,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-api",
+          "Host": "localhost",
           "Port": 6300
         }
       ]
@@ -139,7 +139,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inventory-api",
+          "Host": "localhost",
           "Port": 6300
         }
       ],
@@ -161,7 +161,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -173,7 +173,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -185,7 +185,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -197,7 +197,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -209,7 +209,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ],
@@ -230,7 +230,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -242,7 +242,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -254,7 +254,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -266,7 +266,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -278,7 +278,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -290,7 +290,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "auth-api",
+          "Host": "localhost",
           "Port": 6100
         }
       ]
@@ -303,7 +303,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-api",
+          "Host": "localhost",
           "Port": 6600
         }
       ]
@@ -315,7 +315,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-api",
+          "Host": "localhost",
           "Port": 6600
         }
       ]
@@ -327,7 +327,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-api",
+          "Host": "localhost",
           "Port": 6600
         }
       ]
@@ -339,7 +339,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-api",
+          "Host": "localhost",
           "Port": 6600
         }
       ]
@@ -351,7 +351,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "user-api",
+          "Host": "localhost",
           "Port": 6600
         }
       ],
@@ -373,7 +373,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notification-api",
+          "Host": "localhost",
           "Port": 5101
         }
       ]
@@ -385,7 +385,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "notification-api",
+          "Host": "localhost",
           "Port": 5101
         }
       ]
@@ -398,7 +398,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "Cart-api",
+          "Host": "localhost",
           "Port": 6200
         }
       ]
@@ -410,7 +410,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "Cart-api",
+          "Host": "localhost",
           "Port": 6200
         }
       ]
@@ -422,7 +422,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "Cart-api",
+          "Host": "localhost",
           "Port": 6200
         }
       ]
@@ -434,7 +434,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "Cart-api",
+          "Host": "localhost",
           "Port": 6200
         }
       ]
@@ -447,7 +447,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-api",
+          "Host": "localhost",
           "Port": 6400
         }
       ]
@@ -459,7 +459,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-api",
+          "Host": "localhost",
           "Port": 6400
         }
       ]
@@ -471,7 +471,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "order-api",
+          "Host": "localhost",
           "Port": 6400
         }
       ]
@@ -480,31 +480,31 @@
   "SwaggerEndPoints": [
     {
       "Name": "Product API",
-      "Url": "http://product-api:6500/swagger/v1/swagger.json"
+      "Url": "http://localhost:6500/swagger/v1/swagger.json"
     },
     {
       "Name": "Inventory API",
-      "Url": "http://inventory-api:6300/swagger/v1/swagger.json"
+      "Url": "http://localhost:6300/swagger/v1/swagger.json"
     },
     {
       "Name": "AuthUser API",
-      "Url": "http://auth-api:6100/swagger/v1/swagger.json"
+      "Url": "http://localhost:6100/swagger/v1/swagger.json"
     },
     {
       "Name": "User API",
-      "Url": "http://user-api:6600/swagger/v1/swagger.json"
+      "Url": "http://localhost:6600/swagger/v1/swagger.json"
     },
     {
       "Name": "Notification API",
-      "Url": "http://notification-api:5101/swagger/v1/swagger.json"
+      "Url": "http://localhost:5101/swagger/v1/swagger.json"
     },
     {
       "Name": "Cart API",
-      "Url": "http://Cart-api:6200/swagger/v1/swagger.json"
+      "Url": "http://localhost:6200/swagger/v1/swagger.json"
     },
     {
       "Name": "Order API",
-      "Url": "http://order-api:6400/swagger/v1/swagger.json"
+      "Url": "http://localhost:6400/swagger/v1/swagger.json"
     }
   ]
 }
