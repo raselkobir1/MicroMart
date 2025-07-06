@@ -5,15 +5,15 @@ ARG RUNTIME=linux-musl-x64
 WORKDIR /src
 
 # 1. COPY with explicit relative path
-COPY ["Services/CartService/Cart.API.csproj", "Services/Cart.API/"]
-RUN dotnet restore "Services/Cart.API/Cart.API.csproj" -r $RUNTIME
+COPY ["Services/Inventory.API/Inventory.API.csproj", "Services/Inventory.API/"]
+RUN dotnet restore "Services/Inventory.API/Inventory.API.csproj" -r $RUNTIME
 
 # 2. Copy remaining files with correct context
 COPY . .
 
 # 3. Set working directory before publish
-WORKDIR "/src/Services/Cart.API"
-RUN dotnet publish "Cart.API.csproj" \
+WORKDIR "/src/Services/Inventory.API"
+RUN dotnet publish "Inventory.API.csproj" \
     -c $BUILD_CONFIGURATION \
     -r $RUNTIME \
     --self-contained false \
@@ -36,5 +36,4 @@ EXPOSE 8080
 
 # 5. Copy from correct publish location
 COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "Cart.API.dll"]
-
+ENTRYPOINT ["dotnet", "Inventory.API.dll"]
