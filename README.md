@@ -18,13 +18,13 @@
 
 ## Tech Stack
 - **Backend:** .NET
-- **API Gateway:** Kong
-- **Authentication:** Keycloak
+- **API Gateway:** Ocelot
+- **Authentication:** Keycloak (Ongoing)
 - **Database:** PostgreSQL
 - **Cache:** Redis
 - **Message Broker:** RabbitMQ
 - **Containerization:** Docker
-- **Logging & Monitoring:** ELK Stack
+- **Logging & Monitoring:** ELK Stack (Ongoing) 
 
 ## Microservices Responsibilities
 
@@ -33,7 +33,7 @@
 - Authentication and authorization.
 - Account verification.
 - Password recovery.
-- Managing roles and permissions.
+- Managing roles and permissions. (Ongoing)
 
 ### 2. **User Service**
 - Managing user profiles.
@@ -63,7 +63,7 @@
 - Updating stock through the inventory service.
 - Recording order details in the user service.
 
-### 7. **Email Service**
+### 7. **Notification Service**
 - Sending order confirmation and notification emails.
 - Storing email history for tracking purposes.
 
